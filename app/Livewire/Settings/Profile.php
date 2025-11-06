@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Settings;
 
 use App\Models\User;
+use Livewire\Component;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Validation\Rule;
-use Livewire\Component;
 
-class Profile extends Component
+final class Profile extends Component
 {
     public string $name = '';
 
@@ -19,8 +21,11 @@ class Profile extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        /** @var User $user */
+        $user = Auth::user();
+
+        $this->name = $user->name;
+        $this->email = $user->email;
     }
 
     /**
@@ -28,6 +33,7 @@ class Profile extends Component
      */
     public function updateProfileInformation(): void
     {
+        /** @var User $user */
         $user = Auth::user();
 
         $validated = $this->validate([
@@ -43,7 +49,10 @@ class Profile extends Component
             ],
         ]);
 
-        $user->fill($validated);
+        /** @var array<string, mixed> $validatedArray */
+        $validatedArray = $validated;
+
+        $user->fill($validatedArray);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
@@ -59,6 +68,7 @@ class Profile extends Component
      */
     public function resendVerificationNotification(): void
     {
+        /** @var User $user */
         $user = Auth::user();
 
         if ($user->hasVerifiedEmail()) {

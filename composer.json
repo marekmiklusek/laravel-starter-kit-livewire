@@ -2,7 +2,7 @@
     "$schema": "https://getcomposer.org/schema.json",
     "name": "marekmiklusek/laravel-starter-kit-livewire",
     "type": "project",
-    "description": "A Laravel livewire starter kit for developers who value code quality.",
+    "description": "A Laravel livewire starter kit with code quality tools pre-configured.",
     "keywords": [
         "laravel",
         "framework"
