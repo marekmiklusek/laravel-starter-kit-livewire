@@ -10,22 +10,22 @@
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.1.18",
-        "autoprefixer": "^10.4.23",
-        "axios": "^1.13.2",
+        "autoprefixer": "^10.4.24",
+        "axios": "^1.13.4",
         "concurrently": "^9.2.1",
         "laravel-vite-plugin": "^2.1",
         "tailwindcss": "^4.1.18",
         "vite": "^7.3.1"
     },
     "devDependencies": {
-        "npm-check-updates": "^19.3.1",
-        "playwright": "^1.58.0",
+        "npm-check-updates": "^19.3.2",
+        "playwright": "^1.58.1",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.7.2"
     },
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "4.56.0",
+        "@rollup/rollup-linux-x64-gnu": "4.57.1",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.1.18",
         "lightningcss-linux-x64-gnu": "^1.31.1"
     }
