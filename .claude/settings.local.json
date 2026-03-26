@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"Container::call\\\\|->call\\(\" c:UsersmarekHerdlaravel-starter-kit-livewire --include=*.php)",
+      "Bash(grep -r \"$this->call\\\\|Manager\\\\|CSRF\\\\|Forgery\" \"c:\\\\Users\\\\marek\\\\Herd\\\\laravel-starter-kit-livewire/bootstrap\" --include=\"*.php\")",
+      "Bash(composer update:*)"
+    ]
+  }
+}

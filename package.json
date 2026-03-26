@@ -9,24 +9,24 @@
         "test:lint": "prettier --check resources/"
     },
     "dependencies": {
-        "@tailwindcss/vite": "^4.1.18",
-        "autoprefixer": "^10.4.24",
-        "axios": "^1.13.4",
+        "@tailwindcss/vite": "^4.2.2",
+        "autoprefixer": "^10.4.27",
+        "axios": "^1.13.6",
         "concurrently": "^9.2.1",
-        "laravel-vite-plugin": "^2.1",
-        "tailwindcss": "^4.1.18",
-        "vite": "^7.3.1"
+        "laravel-vite-plugin": "^3.0",
+        "tailwindcss": "^4.2.2",
+        "vite": "^8.0.3"
     },
     "devDependencies": {
-        "npm-check-updates": "^19.3.2",
-        "playwright": "^1.58.1",
+        "npm-check-updates": "^19.6.5",
+        "playwright": "^1.58.2",
         "prettier": "^3.8.1",
         "prettier-plugin-organize-imports": "^4.3.0",
         "prettier-plugin-tailwindcss": "^0.7.2"
     },
     "optionalDependencies": {
-        "@rollup/rollup-linux-x64-gnu": "4.57.1",
-        "@tailwindcss/oxide-linux-x64-gnu": "^4.1.18",
-        "lightningcss-linux-x64-gnu": "^1.31.1"
+        "@rollup/rollup-linux-x64-gnu": "4.60.0",
+        "@tailwindcss/oxide-linux-x64-gnu": "^4.2.2",
+        "lightningcss-linux-x64-gnu": "^1.32.0"
     }
 }

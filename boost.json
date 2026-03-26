@@ -1,9 +1,17 @@
 {
     "agents": [
-        "claude_code"
+        "claude_code",
+        "codex",
+        "copilot"
     ],
-    "editors": [
-        "claude_code"
-    ],
-    "guidelines": []
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "sail": false,
+    "skills": [
+        "laravel-best-practices",
+        "fluxui-development",
+        "volt-development",
+        "pest-testing"
+    ]
 }
