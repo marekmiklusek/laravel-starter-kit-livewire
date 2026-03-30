@@ -19,3 +19,15 @@
 - **Generation:** Create new actions with `php artisan make:action "{name}" --no-interaction`.
 - **Transactions:** Wrap complex operations in `DB::transaction()` within actions when multiple models are involved.
 - **No Dependencies Case:** Some actions do not require constructor dependencies and can use only the `execute()` method.
+
+### 5. Configuration & Migrations
+
+#### Configuration Access
+- **Typed Helpers:** Never use `config()` directly. Always use typed accessors:
+  - `config()->string('key')` for string values
+  - `config()->integer('key')` for integer values
+  - `config()->array('key')` for array values
+
+#### Migration Defaults 
+- **No Default Values in Migrations:** Never define default column values (e.g., `->default(0)`) in migration files.
+- **Requirement:** Define all default values in application code (model casts, constructors, Action classes, etc.).
