@@ -20,7 +20,7 @@
 - **Transactions:** Wrap complex operations in `DB::transaction()` within actions when multiple models are involved.
 - **No Dependencies Case:** Some actions do not require constructor dependencies and can use only the `execute()` method.
 
-### 5. Configuration & Migrations
+### 5. Configuration & Migrations 
 
 #### Configuration Access
 - **Typed Helpers:** Never use `config()` directly. Always use typed accessors:
