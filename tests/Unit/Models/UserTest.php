@@ -18,3 +18,18 @@ test('to array', function (): void {
             'updated_at',
         ]);
 });
+
+test('initials', function (): void {
+    $user = User::factory()->make(['name' => 'Jane Ann Doe']);
+
+    expect($user->initials())->toBe('JA');
+});
+
+test('casts', function (): void {
+    $user = new User();
+
+    expect($user->casts())->toBe([
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ]);
+});
