@@ -1,265 +1,187 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
-
-This is the official Laravel starter kit using Livewire v3, Volt, and Flux UI components. It provides a complete authentication system with Laravel Fortify including registration, login, password reset, email verification, and two-factor authentication.
-
-**Key Technologies:**
-- Laravel 12 (latest streamlined structure)
-- Livewire 3 with Volt (single-file components)
-- Flux UI (Livewire component library)
-- Tailwind CSS v4
-- Pest v4 (testing with browser support)
-- Laravel Fortify (authentication)
-
-## Development Commands
-
-### Running the Application
-```bash
-# Start all services concurrently (server, queue, vite)
-composer run dev
-
-# Alternative: Run services individually
-php artisan serve
-php artisan queue:listen --tries=1
-npm run dev
-```
-
-### Testing
-```bash
-# Run all tests (includes type coverage, unit, lint, types)
-composer test
-
-# Run only unit/feature/browser tests
-composer run test:unit
-# Or: php artisan test
-
-# Run specific test file
-php artisan test tests/Browser/WelcomeTest.php
-
-# Run tests matching a filter
-php artisan test --filter=testName
-
-# Check type coverage (must be 100%)
-composer run test:type-coverage
-# Or: pest --type-coverage --min=100
-
-# Run type checking with PHPStan
-composer run test:types
-# Or: vendor/bin/phpstan
-```
-
-### Code Quality
-```bash
-# Format all code (Rector + Pint + Prettier)
-composer run lint
-
-# Run linting tests (checks formatting without fixing)
-composer run test:lint
-
-# Format PHP only with Pint
-vendor/bin/pint
-
-# Format specific files with Pint
-vendor/bin/pint --dirty
-
-# Check Pint formatting
-vendor/bin/pint --test
-
-# Format frontend code with Prettier
-npm run lint
-
-# Run Rector refactoring
-vendor/bin/rector
-```
-
-### Setup
-```bash
-# Initial setup (install dependencies, create .env, generate key, migrate, build assets)
-composer run setup
-
-# Update dependencies
-composer run update:requirements
-```
-
-## Architecture & Patterns
-
-### Laravel 12 Streamlined Structure
-This project uses Laravel 12's simplified structure:
-- **No `app/Console/Kernel.php`** - Commands auto-register from `app/Console/Commands/`
-- **No `app/Http/Kernel.php`** - Middleware configured in `bootstrap/app.php`
-- **`bootstrap/app.php`** - Central configuration for middleware, exceptions, routing
-- **`bootstrap/providers.php`** - Application-specific service providers
-
-### Authentication Flow
-- **Laravel Fortify** handles all authentication logic (no controllers needed)
-- Fortify configured in `config/fortify.php`
-- Fortify actions in `app/Actions/Fortify/` (CreateNewUser, ResetUserPassword, etc.)
-- Routes automatically registered by Fortify (login, register, password reset, etc.)
-- Fortify views disabled in favor of Livewire components in `resources/views/livewire/auth/`
-
-### Livewire Component Organization
-```
-app/Livewire/
-  Actions/         # Reusable actions (e.g., Logout)
-  Settings/        # Settings page components
-    Profile.php
-    Password.php
-    TwoFactor.php
-    Appearance.php
-    DeleteUserForm.php
-    TwoFactor/     # Sub-components
-      RecoveryCodes.php
-
-resources/views/livewire/
-  auth/            # Authentication views (login, register, etc.)
-  settings/        # Settings views matching app/Livewire/Settings
-```
-
-**Livewire Pattern:**
-- Class-based Livewire components (not using Volt for complex components)
-- Each component has matching Blade view in `resources/views/livewire/`
-- Components handle their own validation inline (not using Form Requests for Livewire)
-- Use `$this->validate()` directly in component methods
-- Components dispatch events for cross-component communication (e.g., `$this->dispatch('profile-updated')`)
-
-### View Layouts
-```
-resources/views/components/layouts/
-  app.blade.php       # Main authenticated layout
-  auth.blade.php      # Base auth layout
-  app/
-    sidebar.blade.php # Sidebar navigation
-    header.blade.php  # App header
-  auth/
-    card.blade.php    # Card-style auth layout
-    simple.blade.php  # Simple auth layout
-    split.blade.php   # Split-screen auth layout
-```
-
-### Flux UI Components
-- Custom Flux components in `resources/views/flux/`
-- Flux navlist customization in `resources/views/flux/navlist/group.blade.php`
-- Custom Flux icons in `resources/views/flux/icon/`
-- Follow Flux conventions when creating new components
-
-### Routing
-- Web routes in `routes/web.php`
-- Console routes in `routes/console.php`
-- Most routes point to Livewire components directly using `ComponentName::class`
-- Settings routes redirect `/settings` to `/settings/profile`
-- Auth routes auto-registered by Fortify
-
-## Code Standards
-
-### PHP Strict Mode & Typing
-- **All PHP files must use `declare(strict_types=1);`** (enforced by Pint)
-- All methods must have explicit return type declarations
-- Use PHP 8.4 constructor property promotion
-- Type hint all parameters
-- Follow array validation rules (check sibling files for string vs array format)
-
-### Code Style Rules (Pint Configuration)
-- Files must declare final classes where appropriate (`final_class: true`)
-- Import all classes, constants, and functions (`global_namespace_import`)
-- Strict comparisons required (`strict_comparison: true`)
-- Use array_push() instead of $array[] syntax
-- DateTimeImmutable preferred over DateTime
-- Specific class element ordering (traits, constants, properties, constructor, methods)
-- Import sorting by length
-
-### Rector Configuration
-- Automatically refactors to Laravel best practices
-- Uses bleeding-edge Laravel patterns
-- Converts to modern Laravel collection/query builder methods
-- Skips `AddOverrideAttributeToOverriddenMethodsRector`
-
-### PHPStan Configuration
-- **Level: max** (strictest analysis)
-- Uses Larastan for Laravel-specific rules
-- Analyzes: app, bootstrap/app.php, config, database, public, routes
-
-### Testing Standards (Pest v4)
-- All tests use Pest syntax (not PHPUnit)
-- Browser tests in `tests/Browser/` using Pest v4's browser testing
-- Feature tests in `tests/Feature/`
-- Unit tests in `tests/Unit/`
-- All tests extend `TestCase` and use `RefreshDatabase`
-- Global test setup in `tests/Pest.php`:
-  - Random strings/UUIDs normalized
-  - HTTP/Process stray requests prevented
-  - Sleep faked
-  - Time frozen for each test
-
-**Browser Testing:**
-- Use `visit()` function for browser tests
-- Can use Laravel features like `Event::fake()`, model factories, `RefreshDatabase`
-- Example: `visit('/')->assertSee('Laravel')->assertNoJavascriptErrors()`
-- Browser screenshots stored in `tests/Browser/Screenshots/` (uploaded as CI artifacts)
-
-**Test Assertions:**
-- Use specific assertion methods: `assertSuccessful()`, `assertForbidden()`, `assertNotFound()`
-- Never use generic `assertStatus(403)` when specific method exists
-- Custom expect extensions defined in `tests/Pest.php` (e.g., `expect()->toBeOne()`)
-
-## Tailwind CSS v4 Specific Notes
-
-**Key Differences from v3:**
-- Import using `@import "tailwindcss";` (not `@tailwind` directives)
-- Opacity utilities changed: `bg-opacity-*` � `bg-black/*`
-- Flex utilities: `flex-shrink-*` � `shrink-*`, `flex-grow-*` � `grow-*`
-- Text utilities: `overflow-ellipsis` � `text-ellipsis`
-- No `corePlugins` support in v4
-
-**Styling Patterns:**
-- Use `gap-*` utilities for spacing between items (not margins)
-- Dark mode support using `dark:` prefix on all components
-- Prettier configured with `prettier-plugin-tailwindcss` for class sorting
-
-## Important Conventions
-
-### When Creating New Features
-1. Use `php artisan make:` commands to scaffold files
-2. Pass `--no-interaction` flag to Artisan commands
-3. For Livewire components, create both class and view
-4. For models, create factory and seeder together
-5. Check sibling files for existing patterns before creating new structures
-6. Follow existing validation patterns (inline for Livewire, Form Requests for controllers)
-
-### Validation
-- Livewire components validate inline using `$this->validate()`
-- Standard controllers use Form Request classes
-- Check existing validation rules to match array vs string format
-
-### Authentication & Authorization
-- User model in `app/Models/User.php`
-- Two-factor authentication fully implemented
-- Email verification enabled
-- Password confirmation for sensitive actions
-
-### Configuration
-- Never use `env()` outside config files
-- Always use `config('key')` in application code
-- Database: SQLite by default
-
-### Testing Workflow
-1. Write or update tests for every change
-2. Run minimal tests with `php artisan test --filter=testName`
-3. Ensure passing before finalizing
-4. Run full suite with `composer test` before committing
-
-## CI/CD
-- GitHub Actions workflow in `.github/workflows/tests.yml`
-- Runs on PHP 8.4 with Node 22
-- Full test suite including Playwright browser tests
-- Caches Rector, PHPStan, and Playwright browsers
-- Uploads browser screenshots as artifacts
-
-===
-
 <laravel-boost-guidelines>
+=== .ai/general rules ===
+
+### 1. Comments
+
+- **No Redundant Comments:** Do not write explanatory comments (e.g., `// Comment...`) inside the code. The code should be self-documenting.
+
+### 2. Error Handling
+
+- **Variable Naming:** In `try/catch` blocks, **never** use `\Throwable $e`.
+- **Requirement:** Always use `Throwable $throwable`.
+
+```php
+// ❌ Wrong
+try {
+    // ...
+} catch (\Throwable $e) {
+    // ...
+}
+
+// ✅ Correct
+try {
+    // ...
+} catch (Throwable $throwable) {
+    // ...
+}
+```
+
+### 3. Testing Strategy
+
+- **No Application Code Modifications:** Do not modify application code to facilitate testing. Tests should interact with the application as it is.
+- **Fakes over Mocks:** **Never** use Mocking (Mockery).
+- **Requirement:** Always use **Fakes** (e.g., `Event::fake()`, `Bus::fake()`, `Storage::fake()`) or concrete implementations.
+
+```php
+// ❌ Wrong
+$mock = Mockery::mock(SomeService::class);
+
+// ✅ Correct
+Event::fake();
+Bus::fake();
+Storage::fake();
+```
+
+### 4. Action Classes
+
+- **Pattern:** This application uses the Action pattern and prefers for much logic to live in reusable and composable Action classes.
+- **Location & Naming:** Actions live in `app/Actions`, and they are named based on what they do **without** any suffix (e.g., `CreateUser`, not `CreateUserAction`).
+- **Reuse Scope:** Actions may be called from many places: jobs, commands, HTTP requests, API requests, MCP requests, and more.
+- **Method Contract:** Create dedicated Action classes for business logic with a single `execute()` method.
+- **Dependencies:** Inject dependencies via the constructor using private properties.
+- **Generation:** Create new actions with `php artisan make:action "{name}" --no-interaction`.
+- **Transactions:** Wrap complex operations in `DB::transaction()` within actions when multiple models are involved.
+- **No Dependencies Case:** Some actions do not require constructor dependencies and can use only the `execute()` method.
+
+```php
+final readonly class CreateUser
+{
+    public function execute(CreateUserData $data): User
+    {
+        return DB::transaction(function () use ($data) {
+            // ...
+        });
+    }
+}
+```
+
+### 5. Configuration & Migrations
+
+#### Configuration Access
+
+- **Typed Helpers:** Never use `config()` directly. Always use typed accessors:
+    - `config()->string('key')` for string values
+    - `config()->integer('key')` for integer values
+    - `config()->array('key')` for array values
+
+```php
+// ❌ Wrong
+$value = config('app.name');
+
+// ✅ Correct
+$value = config()->string('app.name');
+$count = config()->integer('app.count');
+$items = config()->array('app.items');
+```
+
+#### Migration Defaults
+
+- **No Default Values in Migrations:** Never define default column values (e.g., `->default(0)`) in migration files.
+- **Requirement:** Define all default values in application code (Action classes, Controller classes, etc.).
+
+```php
+// ❌ Wrong (in migration)
+$table->integer('count')->default(0);
+
+// ✅ Correct (in migration — no default)
+$table->integer('count');
+```
+
+### 6. Validation
+
+- **String Minimum Length:** When validating a `string` field, always include the `min:` rule.
+
+```php
+// ❌ Wrong
+'name' => ['required', 'string'],
+
+// ✅ Correct
+'name' => ['required', 'string', 'min:1'],
+```
+
+### 7. Code Spacing
+
+- **Breathing Room:** Use blank lines to visually separate logical units inside methods. Code should read as distinct "thoughts", not as one dense block.
+- **Before Control Structures:** Always put a blank line before `foreach`, `if`, `for`, `while`, `switch`, `try`, and `return` when they follow other statements.
+- **Between Logical Steps:** Separate variable preparation, conditional checks, transformations, and assignments with blank lines.
+
+```php
+// ❌ Wrong — dense, hard to scan
+/** @var Collection<int, array<int, string>> $rows */
+$rows = Collection::make();
+foreach ($parameters as $parameter) {
+    // ...
+}
+
+// ✅ Correct — blank line before the loop
+/** @var Collection<int, array<int, string>> $rows */
+$rows = Collection::make();
+
+foreach ($parameters as $parameter) {
+    // ...
+}
+```
+
+```php
+// ❌ Wrong — multiple logical steps glued together
+$entry = trim($entry);
+if ($entry === '') {
+    continue;
+}
+[$filterName, $valueName] = array_pad(explode('=', $entry, 2), 2, '');
+if ($filterName === '' || $valueName === '') {
+    continue;
+}
+$out[$filterName] = $valueName;
+
+// ✅ Correct — each logical step separated
+$entry = trim($entry);
+
+if ($entry === '') {
+    continue;
+}
+
+[$filterName, $valueName] = array_pad(explode('=', $entry, 2), 2, '');
+
+if ($filterName === '' || $valueName === '') {
+    continue;
+}
+
+$out[$filterName] = $valueName;
+```
+
+### 8. Block Body Style
+
+- **No Empty Braces:** Never use empty inline braces `{}`.
+- **Always Open Body:** The opening `{` and closing `}` always go on separate lines, with `// ...` (or actual code) inside — even when the body would otherwise be empty.
+- **Applies Everywhere:** Constructors, methods, classes, closures — all blocks follow this style.
+```php
+// ❌ Wrong
+final readonly class SomeController
+{
+    public function __construct(private CreateUser $createUser) {}
+}
+ 
+// ✅ Correct
+final readonly class SomeController
+{
+    public function __construct(private CreateUser $createUser)
+    {
+        // ...
+    }
+}
+```
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
