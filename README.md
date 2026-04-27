@@ -63,6 +63,35 @@ npx playwright install
 
 This installs the necessary browser binaries for running browser tests.
 
+#### 🌍 Localization
+
+The starter kit ships with English (`en`) and Czech (`cs`) translations. Translation files live in the `lang/` directory:
+
+```
+lang/
+├── en.json              # UI strings (English)
+├── cs.json              # UI strings (Czech)
+├── en/
+│   ├── auth.php         # Authentication messages
+│   ├── passwords.php    # Password reset messages
+│   ├── pagination.php   # Pagination labels
+│   └── validation.php   # Validation messages
+└── cs/
+    ├── auth.php
+    ├── passwords.php
+    ├── pagination.php
+    └── validation.php
+```
+
+Switch the active language by setting `APP_LOCALE` in your `.env` file:
+
+```env
+APP_LOCALE=cs
+APP_FALLBACK_LOCALE=en
+```
+
+To add another language, create a new `lang/{locale}.json` for UI strings and a matching `lang/{locale}/` directory for the framework files.
+
 #### 🚀 Production Environment
 
 The setup script automatically creates a `.env.production` file. Configure it with production-specific settings:
