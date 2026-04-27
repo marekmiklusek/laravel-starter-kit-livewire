@@ -9,6 +9,7 @@
     "nightwatch_mcp": false,
     "sail": false,
     "skills": [
+        "fortify-development",
         "laravel-best-practices",
         "fluxui-development",
         "volt-development",
