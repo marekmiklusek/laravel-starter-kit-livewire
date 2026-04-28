@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Laravel\Fortify\Features;
 
+$registrationEnabled = (bool) env('FORTIFY_REGISTRATION_ENABLED', true);
+
 return [
 
     /*
@@ -145,8 +147,23 @@ return [
     |
     */
 
-    'features' => [
-        Features::registration(),
+    /*
+    |--------------------------------------------------------------------------
+    | Registration Enabled
+    |--------------------------------------------------------------------------
+    |
+    | Single switch to enable or disable user self-registration. Toggle the
+    | $registrationEnabled variable at the top of this file. When false,
+    | the /register routes are not registered (returning 404), and the
+    | "Sign up" link on the login page is hidden automatically because
+    | Route::has('register') resolves to false.
+    |
+    */
+
+    'registration_enabled' => $registrationEnabled,
+
+    'features' => array_filter([
+        $registrationEnabled ? Features::registration() : null,
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::twoFactorAuthentication([
@@ -154,6 +171,6 @@ return [
             'confirmPassword' => true,
             // 'window' => 0,
         ]),
-    ],
+    ]),
 
 ];

@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\RateLimiter;
 
 it('resolves fortify auth views', function (): void {
     $this->get('/login')->assertOk();
-    $this->get('/register')->assertOk();
     $this->get('/forgot-password')->assertOk();
     $this->get('/reset-password/token-value')->assertOk();
 });
+
+it('resolves the register view when registration is enabled', function (): void {
+    $this->get('/register')->assertOk();
+})->skip(fn (): bool => ! config()->boolean('fortify.registration_enabled'), 'Registration is disabled.');
 
 it('configures the login rate limiter', function (): void {
     $request = Request::create('/login', 'POST', [

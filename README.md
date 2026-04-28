@@ -92,6 +92,21 @@ APP_FALLBACK_LOCALE=en
 
 To add another language, create a new `lang/{locale}.json` for UI strings and a matching `lang/{locale}/` directory for the framework files.
 
+#### 🔐 Enable / Disable Registration
+
+User self-registration is controlled by a single switch via the `FORTIFY_REGISTRATION_ENABLED` env variable:
+
+```env
+FORTIFY_REGISTRATION_ENABLED=true   # default — registration is open
+FORTIFY_REGISTRATION_ENABLED=false  # disable registration
+```
+
+When set to `false`:
+- The `/register` route is not registered and returns **404**
+- The "Don't have an account? Sign up" link on the login page is hidden automatically
+
+The flag is also exposed as `config()->boolean('fortify.registration_enabled')` if you need to read it elsewhere in the application.
+
 #### 🚀 Production Environment
 
 The setup script automatically creates a `.env.production` file. Configure it with production-specific settings:
@@ -151,6 +166,7 @@ composer test
 
 This includes:
 - Type coverage (100% minimum)
+- Code coverage (100% required)
 - Unit and feature tests (Pest)
 - Code style validation
 - Static analysis (PHPStan)
