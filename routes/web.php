@@ -5,13 +5,11 @@ declare(strict_types=1);
 use Laravel\Fortify\Features;
 use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\Password;
-use Illuminate\Contracts\View\View;
 use App\Livewire\Settings\TwoFactor;
 use App\Livewire\Settings\Appearance;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\View\Factory;
 
-Route::get('/', fn (): Factory|View => view('welcome'))->name('home');
+Route::redirect('/', 'login')->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

@@ -160,10 +160,10 @@ This includes:
 This starter kit includes Pest 4 with browser testing capabilities. Create browser tests in `tests/Browser/`:
 
 ```php
-it('displays the welcome page', function () {
-    $page = visit('/');
-    
-    $page->assertSee('Laravel')
+it('displays the login page', function () {
+    $page = visit('/login');
+
+    $page->assertSee('Log in')
         ->assertNoJavascriptErrors();
 });
 ```
