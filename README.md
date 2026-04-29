@@ -107,6 +107,22 @@ When set to `false`:
 
 The flag is also exposed as `config()->boolean('fortify.registration_enabled')` if you need to read it elsewhere in the application.
 
+#### 🔑 Enable / Disable Two-Factor Authentication
+
+Two-factor authentication is controlled by a single switch via the `FORTIFY_2FA_ENABLED` env variable:
+
+```env
+FORTIFY_2FA_ENABLED=true   # default — 2FA is available
+FORTIFY_2FA_ENABLED=false  # disable 2FA
+```
+
+When set to `false`:
+- The `/settings/two-factor` route is not registered and returns **404**
+- The "Two-Factor Auth" link in the settings sidebar is hidden automatically
+- Fortify's `/two-factor-*` endpoints (challenge, enable, confirm, recovery codes) are not registered
+
+The `TwoFactorAuthenticatable` trait stays on the `User` model — it is inert without the feature registered, and removing it would break factories that fill 2FA columns. Tests always run with 2FA enabled regardless of `.env` (forced via `phpunit.xml`), so the 100% coverage gate is not affected by toggling this flag locally.
+
 #### 🚀 Production Environment
 
 The setup script automatically creates a `.env.production` file. Configure it with production-specific settings:
