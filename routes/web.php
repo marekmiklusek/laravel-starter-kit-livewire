@@ -22,11 +22,12 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('settings/password', Password::class)->name('user-password.edit');
     Route::get('settings/appearance', Appearance::class)->name('appearance.edit');
 
-    Route::get('settings/two-factor', TwoFactor::class)
-        ->when(
-            Features::canManageTwoFactorAuthentication()
-                && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
-            fn ($route) => $route->middleware(['password.confirm']),
-        )
-        ->name('two-factor.show');
+    if (Features::canManageTwoFactorAuthentication()) {
+        Route::get('settings/two-factor', TwoFactor::class)
+            ->when(
+                Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                fn ($route) => $route->middleware(['password.confirm']),
+            )
+            ->name('two-factor.show');
+    }
 });

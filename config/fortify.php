@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Laravel\Fortify\Features;
 
+$twoFactorEnabled = (bool) env('FORTIFY_2FA_ENABLED', true);
 $registrationEnabled = (bool) env('FORTIFY_REGISTRATION_ENABLED', true);
 
 return [
@@ -145,7 +146,24 @@ return [
     | by removing them from this array. You're free to only remove some of
     | these features or you can even remove all of these if you need to.
     |
+    | Two-factor authentication is gated on FORTIFY_2FA_ENABLED. When false,
+    | the 2FA feature is removed from the array; this hides the settings
+    | page, the sidebar link, and disables the /two-factor-* routes. The
+    | TwoFactorAuthenticatable trait stays on the User model — it is
+    | inert without the feature registered.
+    |
     */
+
+    'features' => array_filter([
+        $registrationEnabled ? Features::registration() : null,
+        Features::resetPasswords(),
+        Features::emailVerification(),
+        $twoFactorEnabled ? Features::twoFactorAuthentication([
+            'confirm' => true,
+            'confirmPassword' => true,
+            // 'window' => 0,
+        ]) : null,
+    ]),
 
     /*
     |--------------------------------------------------------------------------
@@ -161,16 +179,5 @@ return [
     */
 
     'registration_enabled' => $registrationEnabled,
-
-    'features' => array_filter([
-        $registrationEnabled ? Features::registration() : null,
-        Features::resetPasswords(),
-        Features::emailVerification(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
-    ]),
 
 ];

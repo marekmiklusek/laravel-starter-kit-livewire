@@ -40,6 +40,7 @@ Storage::fake();
 - **Pattern:** This application uses the Action pattern and prefers for much logic to live in reusable and composable Action classes.
 - **Location & Naming:** Actions live in `app/Actions`, and they are named based on what they do **without** any suffix (e.g., `CreateUser`, not `CreateUserAction`).
 - **Reuse Scope:** Actions may be called from many places: jobs, commands, HTTP requests, API requests, MCP requests, and more.
+- **Extraction Trigger:** Move logic into an Action class as soon as it is used in more than one place. A single call site can stay inline; the second call site is the signal to extract — duplication is the threshold, not speculation.
 - **Method Contract:** Create dedicated Action classes for business logic with a single `execute()` method.
 - **Dependencies:** Inject dependencies via the constructor using private properties.
 - **Generation:** Create new actions with `php artisan make:action "{name}" --no-interaction`.

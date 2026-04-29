@@ -55,7 +55,7 @@ final class Profile extends Component
         $user->fill($validatedArray);
 
         if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
+            $user->forceFill(['email_verified_at' => null]);
         }
 
         $user->save();

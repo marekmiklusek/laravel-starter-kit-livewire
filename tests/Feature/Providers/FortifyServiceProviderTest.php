@@ -12,9 +12,9 @@ it('resolves fortify auth views', function (): void {
     $this->get('/reset-password/token-value')->assertOk();
 });
 
-it('resolves the register view when registration is enabled', function (): void {
+it('resolves the register view', function (): void {
     $this->get('/register')->assertOk();
-})->skip(fn (): bool => ! config()->boolean('fortify.registration_enabled'), 'Registration is disabled.');
+});
 
 it('configures the login rate limiter', function (): void {
     $request = Request::create('/login', 'POST', [

@@ -29,7 +29,16 @@ test('casts', function (): void {
     $user = new User();
 
     expect($user->casts())->toBe([
-        'email_verified_at' => 'datetime',
+        'id' => 'string',
+        'name' => 'string',
+        'email' => 'string',
         'password' => 'hashed',
+        'two_factor_secret' => 'encrypted',
+        'two_factor_recovery_codes' => 'encrypted',
+        'two_factor_confirmed_at' => 'datetime',
+        'remember_token' => 'string',
+        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ]);
 });
