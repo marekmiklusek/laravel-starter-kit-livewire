@@ -90,14 +90,21 @@ $table->integer('count');
 ```
 
 ### 6. Validation
-- **String Minimum Length:** When validating a `string` field, always include the `min:` rule.
+- **Always Both Bounds:** Whenever it makes any sense, define **both** `min:` and `max:` — never only one, never neither. This applies to strings (length), numerics (value), and arrays (size).
 
 ```php
-// ❌ Wrong
+// ❌ Wrong — no bounds
 'name' => ['required', 'string'],
 
-// ✅ Correct
-'name' => ['required', 'string', 'min:1'],
+// ❌ Wrong — only max
+'name' => ['required', 'string', 'max:255'],
+'age' => ['required', 'integer', 'max:120'],
+'tags' => ['required', 'array', 'max:10'],
+
+// ✅ Correct — both bounds
+'name' => ['required', 'string', 'min:1', 'max:255'],
+'age' => ['required', 'integer', 'min:0', 'max:120'],
+'tags' => ['required', 'array', 'min:1', 'max:10'],
 ```
 
 ### 7. Code Spacing
@@ -167,6 +174,33 @@ final readonly class SomeController
     public function __construct(private CreateUser $createUser)
     {
         // ...
+    }
+}
+```
+
+### 9. Cache & TTL
+- **No TTL Constants:** Never define TTL values as class constants at the top of a file (e.g. `private const TTL = 3600;`).
+- **Requirement:** Always express TTL inline with a `Carbon` interval at the call site: `now()->addDay()`, `now()->addMinutes(15)`, `now()->addHour()`, etc.
+- **Applies To:** `Cache::remember()`, `Cache::put()`, `RateLimiter`, and any other API taking a TTL.
+
+```php
+// ❌ Wrong
+final class SomeService
+{
+    private const CACHE_TTL = 86400;
+
+    public function execute(): mixed
+    {
+        return Cache::remember('key', self::CACHE_TTL, fn () => $this->compute());
+    }
+}
+
+// ✅ Correct
+final class SomeService
+{
+    public function execute(): mixed
+    {
+        return Cache::remember('key', now()->addDay(), fn () => $this->compute());
     }
 }
 ```
