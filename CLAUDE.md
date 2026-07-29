@@ -100,14 +100,21 @@ $table->integer('count');
 
 ### 6. Validation
 
-- **String Minimum Length:** When validating a `string` field, always include the `min:` rule.
+- **Always Both Bounds:** Whenever it makes any sense, define **both** `min:` and `max:` — never only one, never neither. This applies to strings (length), numerics (value), and arrays (size).
 
 ```php
-// ❌ Wrong
+// ❌ Wrong — no bounds
 'name' => ['required', 'string'],
 
-// ✅ Correct
-'name' => ['required', 'string', 'min:1'],
+// ❌ Wrong — only max
+'name' => ['required', 'string', 'max:255'],
+'age' => ['required', 'integer', 'max:120'],
+'tags' => ['required', 'array', 'max:10'],
+
+// ✅ Correct — both bounds
+'name' => ['required', 'string', 'min:1', 'max:255'],
+'age' => ['required', 'integer', 'min:0', 'max:120'],
+'tags' => ['required', 'array', 'min:1', 'max:10'],
 ```
 
 ### 7. Code Spacing
@@ -183,6 +190,34 @@ final readonly class SomeController
 }
 ```
 
+### 9. Cache & TTL
+
+- **No TTL Constants:** Never define TTL values as class constants at the top of a file (e.g. `private const TTL = 3600;`).
+- **Requirement:** Always express TTL inline with a `Carbon` interval at the call site: `now()->addDay()`, `now()->addMinutes(15)`, `now()->addHour()`, etc.
+- **Applies To:** `Cache::remember()`, `Cache::put()`, `RateLimiter`, and any other API taking a TTL.
+
+```php
+// ❌ Wrong
+final class SomeService
+{
+    private const CACHE_TTL = 86400;
+
+    public function execute(): mixed
+    {
+        return Cache::remember('key', self::CACHE_TTL, fn () => $this->compute());
+    }
+}
+
+// ✅ Correct
+final class SomeService
+{
+    public function execute(): mixed
+    {
+        return Cache::remember('key', now()->addDay(), fn () => $this->compute());
+    }
+}
+```
+
 === foundation rules ===
 
 # Laravel Boost Guidelines
@@ -194,6 +229,21 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.4
+- laravel/fortify (FORTIFY) - v1
+- laravel/framework (LARAVEL) - v13
+- laravel/prompts (PROMPTS) - v0
+- livewire/flux (FLUXUI_FREE) - v2
+- livewire/livewire (LIVEWIRE) - v4
+- livewire/volt (VOLT) - v1
+- larastan/larastan (LARASTAN) - v3
+- laravel/boost (BOOST) - v2
+- laravel/mcp (MCP) - v0
+- laravel/pail (PAIL) - v1
+- laravel/pint (PINT) - v1
+- laravel/sail (SAIL) - v1
+- pestphp/pest (PEST) - v5
+- phpunit/phpunit (PHPUNIT) - v13
+- rector/rector (RECTOR) - v2
 
 ## Conventions
 
@@ -253,7 +303,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
 - Inspect routes with `php artisan route:list`. Filter with: `--method=GET`, `--name=users`, `--path=api`, `--except-vendor`, `--only-vendor`.
 - Read configuration values using dot notation: `php artisan config:show app.name`, `php artisan config:show database.default`. Or read config files directly from the `config/` directory.
-- To check environment variables, read the `.env` file directly.
 
 ## Tinker
 
@@ -291,5 +340,60 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
+
+=== laravel/core rules ===
+
+# Do Things the Laravel Way
+
+- Use `php artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can list available Artisan commands using `php artisan list` and check their parameters with `php artisan [command] --help`.
+- If you're creating a generic PHP class, use `php artisan make:class`.
+- Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
+
+### Model Creation
+
+- When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `php artisan make:model --help` to check the available options.
+
+## APIs & Eloquent Resources
+
+- For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
+
+## URL Generation
+
+- When generating links to other pages, prefer named routes and the `route()` function.
+
+## Testing
+
+- When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
+- Faker: Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
+- When creating tests, make use of `php artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
+
+## Vite Error
+
+- If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
+
+=== volt/core rules ===
+
+# Livewire Volt
+
+- Single-file Livewire components: PHP logic and Blade templates in one file.
+- Always check existing Volt components to determine functional vs class-based style.
+- IMPORTANT: Always use `search-docs` tool for version-specific Volt documentation and updated code examples.
+- IMPORTANT: Activate `volt-development` every time you're working with a Volt or single-file component-related task.
+
+=== pint/core rules ===
+
+# Laravel Pint Code Formatter
+
+- If you have modified any PHP files, you must run `vendor/bin/pint --dirty --format agent` before finalizing changes to ensure your code matches the project's expected style.
+- Do not run `vendor/bin/pint --test --format agent`, simply run `vendor/bin/pint --format agent` to fix any formatting issues.
+
+=== pest/core rules ===
+
+## Pest
+
+- This project uses Pest for testing. Create tests: `php artisan make:test --pest {name}`.
+- The `{name}` argument should not include the test suite directory. Use `php artisan make:test --pest SomeFeatureTest` instead of `php artisan make:test --pest Feature/SomeFeatureTest`.
+- Run tests: `php artisan test --compact` or filter: `php artisan test --compact --filter=testName`.
+- Do NOT delete tests without approval.
 
 </laravel-boost-guidelines>

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Pest\Rector\Set\PestSetList;
 use RectorLaravel\Set\LaravelSetList;
 use RectorLaravel\Set\LaravelSetProvider;
 use Rector\Caching\ValueObject\Storage\FileCacheStorage;
@@ -22,6 +23,7 @@ return RectorConfig::configure()
         LaravelSetList::LARAVEL_FACTORIES,
         LaravelSetList::LARAVEL_IF_HELPERS,
         LaravelSetList::LARAVEL_LEGACY_FACTORIES_TO_CLASSES,
+        PestSetList::CODING_STYLE,
     ])
     ->withImportNames(
         removeUnusedImports: true,
