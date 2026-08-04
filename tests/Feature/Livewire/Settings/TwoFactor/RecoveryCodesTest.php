@@ -56,7 +56,8 @@ it('adds an error when recovery codes cannot be decoded', function (): void {
 
     $this->actingAs($user);
 
-    Livewire::test(RecoveryCodes::class)
-        ->assertHasErrors('recoveryCodes')
-        ->assertSet('recoveryCodes', []);
+    $component = Livewire::test(RecoveryCodes::class);
+
+    $component->assertSet('recoveryCodes', []);
+    $component->assertHasErrors('recoveryCodes');
 });

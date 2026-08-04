@@ -21,12 +21,13 @@ it('updates profile information', function (): void {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    Livewire::test(Profile::class)
+    $component = Livewire::test(Profile::class)
         ->set('name', 'Bob')
         ->set('email', 'bob@example.com')
-        ->call('updateProfileInformation')
-        ->assertHasNoErrors()
-        ->assertDispatched('profile-updated');
+        ->call('updateProfileInformation');
+
+    $component->assertHasNoErrors();
+    $component->assertDispatched('profile-updated');
 
     $fresh = $user->fresh();
 

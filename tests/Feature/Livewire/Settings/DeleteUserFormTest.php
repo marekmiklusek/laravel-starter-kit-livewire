@@ -12,11 +12,12 @@ it('deletes the user with correct password', function (): void {
 
     $this->actingAs($user);
 
-    Livewire::test(DeleteUserForm::class)
+    $component = Livewire::test(DeleteUserForm::class)
         ->set('password', 'password')
-        ->call('deleteUser')
-        ->assertHasNoErrors()
-        ->assertRedirect('/');
+        ->call('deleteUser');
+
+    $component->assertHasNoErrors();
+    $component->assertRedirect('/');
 
     expect(Auth::check())->toBeFalse();
 });

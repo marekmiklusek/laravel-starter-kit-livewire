@@ -9,9 +9,9 @@ use PragmaRX\Google2FA\Google2FA;
 use App\Livewire\Settings\TwoFactor;
 
 beforeEach(function (): void {
-    $user = User::factory()->withoutTwoFactor()->create();
-    $this->actingAs($user);
-    $this->user = $user;
+    $this->user = User::factory()->withoutTwoFactor()->create();
+
+    $this->actingAs($this->user);
 });
 
 it('mounts with two factor disabled', function (): void {
@@ -21,7 +21,10 @@ it('mounts with two factor disabled', function (): void {
 });
 
 it('resets pending two factor on mount when unconfirmed', function (): void {
-    $this->user->forceFill([
+    /** @var User $user */
+    $user = $this->user;
+
+    $user->forceFill([
         'two_factor_secret' => encrypt('secret'),
         'two_factor_recovery_codes' => encrypt(json_encode(['code-1'])),
         'two_factor_confirmed_at' => null,
@@ -30,7 +33,7 @@ it('resets pending two factor on mount when unconfirmed', function (): void {
     Livewire::test(TwoFactor::class)
         ->assertSet('twoFactorEnabled', false);
 
-    expect($this->user->fresh()?->two_factor_secret)->toBeNull();
+    expect($user->refresh()->two_factor_secret)->toBeNull();
 });
 
 it('enables two factor and loads setup data', function (): void {
@@ -38,8 +41,8 @@ it('enables two factor and loads setup data', function (): void {
         ->call('enable')
         ->assertSet('showModal', true);
 
-    expect($component->get('qrCodeSvg'))->not->toBe('')
-        ->and($component->get('manualSetupKey'))->not->toBe('');
+    expect($component->get('qrCodeSvg'))->toBeString()->not->toBe('')
+        ->and($component->get('manualSetupKey'))->toBeString()->not->toBe('');
 });
 
 it('shows verification step when required', function (): void {
@@ -50,12 +53,21 @@ it('shows verification step when required', function (): void {
 });
 
 it('confirms two factor with valid code', function (): void {
+    /** @var User $user */
+    $user = $this->user;
+
     $component = Livewire::test(TwoFactor::class)
         ->call('enable');
 
-    $user = $this->user->fresh();
-    $secret = decrypt($user->two_factor_secret);
-    $code = resolve(Google2FA::class)->getCurrentOtp($secret);
+    $secret = $user->refresh()->two_factor_secret;
+
+    expect($secret)->toBeString();
+
+    $decrypted = decrypt($secret ?? '');
+
+    expect($decrypted)->toBeString();
+
+    $code = resolve(Google2FA::class)->getCurrentOtp(is_string($decrypted) ? $decrypted : '');
 
     $component
         ->set('code', $code)
@@ -75,7 +87,10 @@ it('resets verification state', function (): void {
 });
 
 it('disables two factor', function (): void {
-    $this->user->forceFill([
+    /** @var User $user */
+    $user = $this->user;
+
+    $user->forceFill([
         'two_factor_secret' => encrypt('secret'),
         'two_factor_recovery_codes' => encrypt(json_encode(['code-1'])),
         'two_factor_confirmed_at' => now(),
@@ -85,31 +100,37 @@ it('disables two factor', function (): void {
         ->call('disable')
         ->assertSet('twoFactorEnabled', false);
 
-    expect($this->user->fresh()?->two_factor_secret)->toBeNull();
+    expect($user->refresh()->two_factor_secret)->toBeNull();
 });
 
-it('returns enabled modal config', function (): void {
-    $component = Livewire::test(TwoFactor::class);
-    $instance = $component->instance();
-    $instance->twoFactorEnabled = true;
+it('renders the enabled modal config', function (): void {
+    /** @var User $user */
+    $user = $this->user;
 
-    expect($instance->modalConfig())->toHaveKeys(['title', 'description', 'buttonText']);
+    $user->forceFill([
+        'two_factor_secret' => encrypt('secret'),
+        'two_factor_recovery_codes' => encrypt(json_encode(['code-1'])),
+        'two_factor_confirmed_at' => now(),
+    ])->save();
+
+    Livewire::test(TwoFactor::class)
+        ->call('enable')
+        ->assertSee(__('Two-Factor Authentication Enabled'))
+        ->assertSee(__('Close'));
 });
 
-it('returns verification modal config', function (): void {
-    $component = Livewire::test(TwoFactor::class);
-    $instance = $component->instance();
-    $instance->twoFactorEnabled = false;
-    $instance->showVerificationStep = true;
-
-    expect($instance->modalConfig()['title'])->toBe(__('Verify Authentication Code'));
+it('renders the verification modal config', function (): void {
+    Livewire::test(TwoFactor::class)
+        ->call('enable')
+        ->call('showVerificationIfNecessary')
+        ->assertSee(__('Verify Authentication Code'))
+        ->assertSee(__('Enter the 6-digit code from your authenticator app.'));
 });
 
-it('returns default modal config', function (): void {
-    $component = Livewire::test(TwoFactor::class);
-
-    expect($component->instance()->modalConfig()['title'])
-        ->toBe(__('Enable Two-Factor Authentication'));
+it('renders the default modal config', function (): void {
+    Livewire::test(TwoFactor::class)
+        ->call('enable')
+        ->assertSee(__('Enable Two-Factor Authentication'));
 });
 
 it('enables two factor directly when confirmation is disabled', function (): void {
@@ -135,16 +156,19 @@ it('closes modal from showVerificationIfNecessary when confirmation is disabled'
 });
 
 it('surfaces setup data error when qr fails', function (): void {
-    $this->user->forceFill([
+    /** @var User $user */
+    $user = $this->user;
+
+    $user->forceFill([
         'two_factor_secret' => 'not-properly-encrypted',
+        'two_factor_recovery_codes' => encrypt(json_encode(['code-1'])),
+        'two_factor_confirmed_at' => now(),
     ])->save();
 
-    $component = Livewire::test(TwoFactor::class);
-    $instance = $component->instance();
-    $reflection = new ReflectionClass($instance);
-    $method = $reflection->getMethod('loadSetupData');
-    $method->invoke($instance);
+    $component = Livewire::test(TwoFactor::class)
+        ->call('enable')
+        ->assertSet('qrCodeSvg', '')
+        ->assertSet('manualSetupKey', '');
 
-    expect($instance->qrCodeSvg)->toBe('')
-        ->and($instance->manualSetupKey)->toBe('');
+    $component->assertHasErrors('setupData');
 });

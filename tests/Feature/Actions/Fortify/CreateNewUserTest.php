@@ -14,9 +14,9 @@ it('creates a new user', function (): void {
         'password_confirmation' => 'Password123',
     ]);
 
-    expect($user)->toBeInstanceOf(User::class)
-        ->and($user->name)->toBe('Test User')
-        ->and($user->email)->toBe('test@example.com');
+    expect($user->name)->toBe('Test User')
+        ->and($user->email)->toBe('test@example.com')
+        ->and($user->exists)->toBeTrue();
 });
 
 it('validates input when creating a user', function (): void {

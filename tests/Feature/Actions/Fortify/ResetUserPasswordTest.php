@@ -15,7 +15,7 @@ it('resets the user password', function (): void {
         'password_confirmation' => 'NewPassword123',
     ]);
 
-    expect(Hash::check('NewPassword123', $user->fresh()?->password ?? ''))->toBeTrue();
+    expect(Hash::check('NewPassword123', $user->refresh()->password))->toBeTrue();
 });
 
 it('validates the password when resetting', function (): void {

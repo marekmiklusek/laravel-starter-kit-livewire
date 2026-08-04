@@ -11,15 +11,16 @@ it('updates the password', function (): void {
     $user = User::factory()->create();
     $this->actingAs($user);
 
-    Livewire::test(Password::class)
+    $component = Livewire::test(Password::class)
         ->set('current_password', 'password')
         ->set('password', 'NewPassword123')
         ->set('password_confirmation', 'NewPassword123')
-        ->call('updatePassword')
-        ->assertHasNoErrors()
-        ->assertDispatched('password-updated');
+        ->call('updatePassword');
 
-    expect(Hash::check('NewPassword123', $user->fresh()?->password ?? ''))->toBeTrue();
+    $component->assertHasNoErrors();
+    $component->assertDispatched('password-updated');
+
+    expect(Hash::check('NewPassword123', $user->refresh()->password))->toBeTrue();
 });
 
 it('fails with incorrect current password', function (): void {
