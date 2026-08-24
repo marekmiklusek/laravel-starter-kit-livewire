@@ -16,7 +16,7 @@
         "livewire/flux": "^2.17.0",
         "livewire/volt": "^1.11.2",
         "marekmiklusek/database-backup": "^1.2.6",
-        "marekmiklusek/telegram-logger": "^1.1.3",
+        "marekmiklusek/telegram-logger": "^2.0.0",
         "nunomaduro/essentials": "^1.2.0"
     },
     "require-dev": {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "22c13a00d82a655976869c1308730c4c",
+    "content-hash": "234d1de0f20b311101d1dba1a5a437d1",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2582,21 +2582,35 @@
         },
         {
             "name": "marekmiklusek/telegram-logger",
-            "version": "v1.1.3",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marekmiklusek/telegram-logger.git",
-                "reference": "d9ce0d3414e361ad8438e174be5f0059e3a28b25"
+                "reference": "442a680b30033f9bd8665c91ffd734736907266d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marekmiklusek/telegram-logger/zipball/d9ce0d3414e361ad8438e174be5f0059e3a28b25",
-                "reference": "d9ce0d3414e361ad8438e174be5f0059e3a28b25",
+                "url": "https://api.github.com/repos/marekmiklusek/telegram-logger/zipball/442a680b30033f9bd8665c91ffd734736907266d",
+                "reference": "442a680b30033f9bd8665c91ffd734736907266d",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^12.17.0|^13.0",
-                "php": "^8.2"
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "illuminate/contracts": "^13.0",
+                "illuminate/support": "^13.0",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "driftingly/rector-laravel": "^2.5",
+                "larastan/larastan": "^3.10",
+                "laravel/pint": "^1.30",
+                "orchestra/testbench": "^11.2",
+                "pestphp/pest": "^5.1",
+                "pestphp/pest-plugin-type-coverage": "^5.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "rector/rector": "^2.6"
             },
             "type": "library",
             "extra": {
@@ -2621,7 +2635,7 @@
                     "email": "marek.miklusek@gmail.com"
                 }
             ],
-            "description": "A Laravel package to send logs to Telegram.",
+            "description": "Send Laravel logs and exceptions to Telegram, with flood protection and redaction of sensitive context.",
             "keywords": [
                 "laravel",
                 "laravel-telegram-logger",
@@ -2632,9 +2646,9 @@
             ],
             "support": {
                 "issues": "https://github.com/marekmiklusek/telegram-logger/issues",
-                "source": "https://github.com/marekmiklusek/telegram-logger/tree/v1.1.3"
+                "source": "https://github.com/marekmiklusek/telegram-logger/tree/v2.0.0"
             },
-            "time": "2026-03-21T15:19:57+00:00"
+            "time": "2026-08-22T14:52:59+00:00"
         },
         {
             "name": "monolog/monolog",
