@@ -15,7 +15,7 @@
         "laravel/tinker": "^3.0.2",
         "livewire/flux": "^2.17.0",
         "livewire/volt": "^1.11.2",
-        "marekmiklusek/database-backup": "^1.2.6",
+        "marekmiklusek/database-backup": "^2.0.0",
         "marekmiklusek/telegram-logger": "^2.0.1",
         "nunomaduro/essentials": "^1.2.0"
     },

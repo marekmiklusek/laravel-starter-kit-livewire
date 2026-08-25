@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b67f42a5eb74d3eeef34d0d13712019c",
+    "content-hash": "95ad3620681279d06d095ed8ce5ac065",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2529,21 +2529,37 @@
         },
         {
             "name": "marekmiklusek/database-backup",
-            "version": "v1.2.6",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marekmiklusek/database-backup.git",
-                "reference": "b7b24b861d8c9fd51352d8de628fdb407e01d39e"
+                "reference": "f0e1891a5e2f0fa44900e0ff68df268fa677e9b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marekmiklusek/database-backup/zipball/b7b24b861d8c9fd51352d8de628fdb407e01d39e",
-                "reference": "b7b24b861d8c9fd51352d8de628fdb407e01d39e",
+                "url": "https://api.github.com/repos/marekmiklusek/database-backup/zipball/f0e1891a5e2f0fa44900e0ff68df268fa677e9b7",
+                "reference": "f0e1891a5e2f0fa44900e0ff68df268fa677e9b7",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^11.31|^12.0|^13.0",
-                "php": "^8.2"
+                "illuminate/console": "^13.0",
+                "illuminate/events": "^13.0",
+                "illuminate/filesystem": "^13.0",
+                "illuminate/http": "^13.0",
+                "illuminate/notifications": "^13.0",
+                "illuminate/support": "^13.0",
+                "nesbot/carbon": "^3.10",
+                "php": "^8.4"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.10",
+                "laravel/pint": "^1.30",
+                "orchestra/testbench": "^11.2",
+                "pestphp/pest": "^5.1",
+                "pestphp/pest-plugin-laravel": "^5.0",
+                "pestphp/pest-plugin-phpstan": "^5.2",
+                "pestphp/pest-plugin-type-coverage": "^5.0",
+                "rector/rector": "^2.6.3"
             },
             "type": "library",
             "extra": {
@@ -2555,7 +2571,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "MarekMiklusek\\DatabaseBackup\\": "src"
+                    "MarekMiklusek\\DatabaseBackup\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2572,13 +2588,16 @@
             "keywords": [
                 "backup",
                 "database",
-                "laravel"
+                "google-drive",
+                "laravel",
+                "mariadb",
+                "mysql"
             ],
             "support": {
                 "issues": "https://github.com/marekmiklusek/database-backup/issues",
-                "source": "https://github.com/marekmiklusek/database-backup/tree/v1.2.6"
+                "source": "https://github.com/marekmiklusek/database-backup/tree/v2.0.0"
             },
-            "time": "2026-07-07T17:26:25+00:00"
+            "time": "2026-08-25T14:56:24+00:00"
         },
         {
             "name": "marekmiklusek/telegram-logger",
