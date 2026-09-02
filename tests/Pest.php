@@ -24,10 +24,3 @@ pest()->extend(TestCase::class)
         Date::setTestNow(Date::now());
     })
     ->in('Browser', 'Feature', 'Unit');
-
-expect()->extend('toBeOne', fn () => $this->toBe(1));
-
-function something(): void
-{
-    // ...
-}

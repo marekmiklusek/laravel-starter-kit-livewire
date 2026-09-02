@@ -6,6 +6,19 @@
     "cloud": false,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
-    "sail": false
+    "nightwatch": false,
+    "packages": [
+        "pestphp/pest-plugin-agent"
+    ],
+    "sail": false,
+    "skills": [
+        "infer-conventions",
+        "fortify-development",
+        "laravel-best-practices",
+        "testing-best-practices",
+        "fluxui-development",
+        "volt-development",
+        "tailwindcss-development",
+        "pest-plugin-agent"
+    ]
 }
