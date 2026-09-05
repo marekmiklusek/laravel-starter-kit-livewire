@@ -155,9 +155,6 @@ php artisan db-backup:cleanup  # delete backups older than the retention period
 
 Adjust the disk, directory, filename pattern, retention period, and mail notifications in `config/database-backup.php`. To back up to Google Drive instead of (or alongside) local storage, add a `google` disk to `config/filesystems.php` and set `storage.disk` — see the [package README](https://github.com/marekmiklusek/database-backup) for the full Google Drive setup guide.
 
-> [!NOTE]
-> If your database server forces TLS and `mysqldump` fails with a certificate error, set `MYSQL_SSL_MODE=REQUIRED` in `.env`. On MariaDB servers also set `DB_BACKUP_DUMP_CLIENT=mariadb`.
-
 #### 📢 Telegram Error Logging
 
 The starter kit ships with [marekmiklusek/telegram-logger](https://github.com/marekmiklusek/telegram-logger), which forwards Laravel log messages and exceptions to a Telegram chat in real time. The config is already published to `config/telegram-logger.php`.

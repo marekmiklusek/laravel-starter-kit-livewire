@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "33a62966cdd7e628180d8386db028f79",
+    "content-hash": "7bfd5eb19afa3aa28111bf1b3cc34ebe",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2529,16 +2529,16 @@
         },
         {
             "name": "marekmiklusek/database-backup",
-            "version": "v2.0.1",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marekmiklusek/database-backup.git",
-                "reference": "84692c625d7bac61d8b1163bd4ed2ab52bbde538"
+                "reference": "a95c7f24b15bb59274e011ae87c82abfe40cb9e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marekmiklusek/database-backup/zipball/84692c625d7bac61d8b1163bd4ed2ab52bbde538",
-                "reference": "84692c625d7bac61d8b1163bd4ed2ab52bbde538",
+                "url": "https://api.github.com/repos/marekmiklusek/database-backup/zipball/a95c7f24b15bb59274e011ae87c82abfe40cb9e2",
+                "reference": "a95c7f24b15bb59274e011ae87c82abfe40cb9e2",
                 "shasum": ""
             },
             "require": {
@@ -2595,9 +2595,9 @@
             ],
             "support": {
                 "issues": "https://github.com/marekmiklusek/database-backup/issues",
-                "source": "https://github.com/marekmiklusek/database-backup/tree/v2.0.1"
+                "source": "https://github.com/marekmiklusek/database-backup/tree/v2.0.3"
             },
-            "time": "2026-08-25T15:30:03+00:00"
+            "time": "2026-09-05T08:57:22+00:00"
         },
         {
             "name": "marekmiklusek/telegram-logger",
@@ -11900,11 +11900,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.12",
+            "version": "2.2.13",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/174b0d88710f00a42598886504dd7a146f91ace5",
-                "reference": "174b0d88710f00a42598886504dd7a146f91ace5",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
+                "reference": "9ba9ac76ee9c5cf5b56d58eb5deec6315b7a0260",
                 "shasum": ""
             },
             "require": {
@@ -11960,20 +11960,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-31T19:09:43+00:00"
+            "time": "2026-09-03T20:38:19+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "14.3.1",
+            "version": "14.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "6ce313bb110384148d1dc7695a99175f59529069"
+                "reference": "93d62632fb675b76c9b941fdcfcfa10ffb9dea75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6ce313bb110384148d1dc7695a99175f59529069",
-                "reference": "6ce313bb110384148d1dc7695a99175f59529069",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/93d62632fb675b76c9b941fdcfcfa10ffb9dea75",
+                "reference": "93d62632fb675b76c9b941fdcfcfa10ffb9dea75",
                 "shasum": ""
             },
             "require": {
@@ -11992,7 +11992,7 @@
                 "theseer/tokenizer": "^2.0.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "^13.3.1"
+                "phpunit/phpunit": "^13.3.2"
             },
             "suggest": {
                 "ext-pcov": "PHP extension that provides line coverage",
@@ -12030,7 +12030,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.1"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/14.3.2"
             },
             "funding": [
                 {
@@ -12050,7 +12050,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-16T05:23:47+00:00"
+            "time": "2026-09-04T03:46:43+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
