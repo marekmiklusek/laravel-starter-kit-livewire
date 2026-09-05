@@ -103,6 +103,7 @@
             "npm run test:lint"
         ],
         "test:unit": "pest --parallel --coverage --exactly=100.0",
+        "test:baseline": "pest --parallel --tia --fresh",
         "test:types": "phpstan",
         "test": [
             "@test:type-coverage",
