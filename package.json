@@ -5,8 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "lint": "prettier --write resources/",
-        "test:lint": "prettier --check resources/"
+        "lint": "prettier --write --cache resources/",
+        "test:lint": "prettier --check --cache resources/"
     },
     "dependencies": {
         "@tailwindcss/vite": "^4.3.3",
