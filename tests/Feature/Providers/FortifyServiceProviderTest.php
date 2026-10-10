@@ -10,8 +10,9 @@ it('resolves fortify auth views', function (): void {
     $this->get('/reset-password/token-value')->assertOk();
 });
 
-it('resolves the register view', function (): void {
-    $this->get('/register')->assertOk();
+it('does not expose registration routes', function (): void {
+    $this->get('/register')->assertNotFound();
+    $this->post('/register')->assertNotFound();
 });
 
 it('throttles login attempts after five tries', function (): void {

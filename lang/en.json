@@ -13,7 +13,6 @@
     "Manage your profile and account settings": "Manage your profile and account settings",
     "Update your name and email address": "Update your name and email address",
     "Name": "Name",
-    "Full name": "Full name",
     "Email": "Email",
     "Email address": "Email address",
     "Email Address": "Email Address",
@@ -67,12 +66,6 @@
     "Enter your email and password below to log in": "Enter your email and password below to log in",
     "Forgot your password?": "Forgot your password?",
     "Remember me": "Remember me",
-    "Don't have an account?": "Don't have an account?",
-    "Sign up": "Sign up",
-    "Create an account": "Create an account",
-    "Enter your details below to create your account": "Enter your details below to create your account",
-    "Create account": "Create account",
-    "Already have an account?": "Already have an account?",
     "Forgot password": "Forgot password",
     "Enter your email to receive a password reset link": "Enter your email to receive a password reset link",
     "Email password reset link": "Email password reset link",
@@ -94,6 +87,5 @@
     "We suggest starting with the following.": "We suggest starting with the following.",
     "Read the": "Read the",
     "Watch video tutorials at": "Watch video tutorials at",
-    "Deploy now": "Deploy now",
-    "Register": "Register"
+    "Deploy now": "Deploy now"
 }

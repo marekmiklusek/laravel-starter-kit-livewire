@@ -13,7 +13,6 @@
     "Manage your profile and account settings": "Spravujte svůj profil a nastavení účtu",
     "Update your name and email address": "Aktualizujte své jméno a e-mailovou adresu",
     "Name": "Jméno",
-    "Full name": "Celé jméno",
     "Email": "E-mail",
     "Email address": "E-mailová adresa",
     "Email Address": "E-mailová adresa",
@@ -66,12 +65,6 @@
     "Enter your email and password below to log in": "Zadejte níže svůj e-mail a heslo pro přihlášení",
     "Forgot your password?": "Zapomněli jste heslo?",
     "Remember me": "Zapamatovat si mě",
-    "Don't have an account?": "Nemáte účet?",
-    "Sign up": "Zaregistrovat se",
-    "Create an account": "Vytvořit účet",
-    "Enter your details below to create your account": "Zadejte níže své údaje pro vytvoření účtu",
-    "Create account": "Vytvořit účet",
-    "Already have an account?": "Již máte účet?",
     "Forgot password": "Zapomenuté heslo",
     "Enter your email to receive a password reset link": "Zadejte svůj e-mail pro zaslání odkazu k obnovení hesla",
     "Email password reset link": "Odeslat odkaz pro obnovu hesla",
@@ -94,6 +87,5 @@
     "We suggest starting with the following.": "Doporučujeme začít následujícím.",
     "Read the": "Přečtěte si",
     "Watch video tutorials at": "Sledujte video tutoriály na",
-    "Deploy now": "Nasadit nyní",
-    "Register": "Registrovat"
+    "Deploy now": "Nasadit nyní"
 }

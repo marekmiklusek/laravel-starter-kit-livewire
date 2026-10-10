@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Illuminate\Contracts\View\View;
-use App\Actions\Fortify\CreateNewUser;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -41,7 +40,6 @@ final class FortifyServiceProvider extends ServiceProvider
     private function configureActions(): void
     {
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
-        Fortify::createUsersUsing(CreateNewUser::class);
     }
 
     /**
@@ -53,7 +51,6 @@ final class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn (): Factory|View => view('livewire.auth.verify-email'));
         Fortify::twoFactorChallengeView(fn (): Factory|View => view('livewire.auth.two-factor-challenge'));
         Fortify::confirmPasswordView(fn (): Factory|View => view('livewire.auth.confirm-password'));
-        Fortify::registerView(fn (): Factory|View => view('livewire.auth.register'));
         Fortify::resetPasswordView(fn (): Factory|View => view('livewire.auth.reset-password'));
         Fortify::requestPasswordResetLinkView(fn (): Factory|View => view('livewire.auth.forgot-password'));
     }
