@@ -17,17 +17,11 @@ final class RecoveryCodes extends Component
     #[Locked]
     public array $recoveryCodes = [];
 
-    /**
-     * Mount the component.
-     */
     public function mount(): void
     {
         $this->loadRecoveryCodes();
     }
 
-    /**
-     * Generate new recovery codes for the user.
-     */
     public function regenerateRecoveryCodes(GenerateNewRecoveryCodes $generateNewRecoveryCodes): void
     {
         /** @var Guard $auth */
@@ -38,9 +32,6 @@ final class RecoveryCodes extends Component
         $this->loadRecoveryCodes();
     }
 
-    /**
-     * Load the recovery codes for the user.
-     */
     private function loadRecoveryCodes(): void
     {
         /** @var Guard $auth */

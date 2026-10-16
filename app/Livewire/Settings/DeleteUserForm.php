@@ -13,9 +13,6 @@ final class DeleteUserForm extends Component
 {
     public string $password = '';
 
-    /**
-     * Delete the currently authenticated user.
-     */
     public function deleteUser(): void
     {
         $this->validate([

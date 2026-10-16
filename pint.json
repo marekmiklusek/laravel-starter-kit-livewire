@@ -5,6 +5,7 @@
         "tmp"
     ],
     "rules": {
+        "Pint/phpdoc_type_annotations_only": true,
         "array_push": true,
         "backtick_to_shell_exec": true,
         "date_time_immutable": true,

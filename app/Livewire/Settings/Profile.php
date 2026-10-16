@@ -16,9 +16,6 @@ final class Profile extends Component
 
     public string $email = '';
 
-    /**
-     * Mount the component.
-     */
     public function mount(): void
     {
         /** @var User $user */
@@ -28,9 +25,6 @@ final class Profile extends Component
         $this->email = $user->email;
     }
 
-    /**
-     * Update the profile information for the currently authenticated user.
-     */
     public function updateProfileInformation(): void
     {
         /** @var User $user */
@@ -63,9 +57,6 @@ final class Profile extends Component
         $this->dispatch('profile-updated', name: $user->name);
     }
 
-    /**
-     * Send an email verification notification to the current user.
-     */
     public function resendVerificationNotification(): void
     {
         /** @var User $user */
