@@ -15,6 +15,19 @@ arch('controllers')
     ->expect('App\Http\Controllers')
     ->not->toBeUsed();
 
+arch('controllers expose only resource methods')
+    ->expect('App\Http\Controllers')
+    ->not->toHavePublicMethodsBesides([
+        '__construct',
+        'index',
+        'create',
+        'store',
+        'show',
+        'edit',
+        'update',
+        'destroy',
+    ]);
+
 arch('commands')
     ->expect('App\Console\Commands')
     ->not->toBeUsed();
