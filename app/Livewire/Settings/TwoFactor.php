@@ -184,6 +184,7 @@ final class TwoFactor extends Component
             $qrCode = $user->twoFactorQrCodeSvg();
             $this->qrCodeSvg = $qrCode;
             $secret = $user->two_factor_secret;
+
             if ($secret !== null) {
                 $decrypted = decrypt($secret);
                 $this->manualSetupKey = is_string($decrypted) ? $decrypted : '';

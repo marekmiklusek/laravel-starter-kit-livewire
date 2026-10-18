@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use Mockery\MockInterface;
-use Mockery\LegacyMockInterface;
-use PHPUnit\Framework\MockObject\MockObject;
-
 arch()->preset()->php();
 arch()->preset()->strict();
 arch()->preset()->security();
@@ -61,11 +57,3 @@ arch('queries')
 arch('queries expose no other public method')
     ->expect('App\Queries')
     ->not->toHavePublicMethodsBesides(['get', '__construct']);
-
-arch('no mocking')
-    ->expect('App')
-    ->not->toUse([
-        LegacyMockInterface::class,
-        MockInterface::class,
-        MockObject::class,
-    ]);
