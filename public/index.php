@@ -7,6 +7,8 @@ use Illuminate\Foundation\Application;
 
 define('LARAVEL_START', microtime(true));
 
+ini_set('display_errors', '0');
+
 if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
