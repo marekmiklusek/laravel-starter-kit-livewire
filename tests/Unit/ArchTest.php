@@ -52,6 +52,7 @@ arch('actions delegate validation and authorization to form requests')
         'validator',
         Validator::class,
         ValidationException::class,
+        Gate::class,
     ])
     ->ignoring('App\Actions\Fortify');
 
