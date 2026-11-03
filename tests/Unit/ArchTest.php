@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
 arch()->preset()->php();
 arch()->preset()->strict();
 arch()->preset()->security();
@@ -25,9 +29,31 @@ arch('controllers expose only resource methods')
         'destroy',
     ]);
 
-arch('commands')
-    ->expect('App\Console\Commands')
-    ->not->toBeUsed();
+arch('controllers delegate validation and authorization to form requests')
+    ->expect('App\Http\Controllers')
+    ->not->toUse([
+        'abort',
+        'abort_if',
+        'abort_unless',
+        'throw_if',
+        'throw_unless',
+        'validator',
+        Validator::class,
+        ValidationException::class,
+        Gate::class,
+    ]);
+
+arch('actions delegate validation and authorization to form requests')
+    ->expect('App\Actions')
+    ->not->toUse([
+        'abort',
+        'abort_if',
+        'abort_unless',
+        'validator',
+        Validator::class,
+        ValidationException::class,
+    ])
+    ->ignoring('App\Actions\Fortify');
 
 arch('actions')
     ->expect('App\Actions')
@@ -58,3 +84,7 @@ arch('queries')
 arch('queries expose no other public method')
     ->expect('App\Queries')
     ->not->toHavePublicMethodsBesides(['get', '__construct']);
+
+arch('commands')
+    ->expect('App\Console\Commands')
+    ->not->toBeUsed();

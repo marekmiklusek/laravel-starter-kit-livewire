@@ -29,7 +29,7 @@ final class CreateUserCommand extends Command
         $email = text(label: 'Email', required: true, validate: ['email' => $this->emailRules()]);
         $password = password(label: 'Password', required: true, validate: ['password' => $this->passwordRulesWithoutConfirmation()]);
 
-        $passwordConfirmation = password(
+        password(
             label: 'Confirm password',
             required: true,
             validate: fn (string $value): string => Validator::make(
@@ -38,12 +38,7 @@ final class CreateUserCommand extends Command
             )->errors()->first('password'),
         );
 
-        $user = $createUser->execute([
-            'name' => $name,
-            'email' => $email,
-            'password' => $password,
-            'password_confirmation' => $passwordConfirmation,
-        ]);
+        $user = $createUser->execute($name, $email, $password);
 
         $this->components->success(sprintf('User [%s] created successfully.', $user->email));
 
