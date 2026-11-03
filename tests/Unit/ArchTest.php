@@ -15,7 +15,7 @@ arch('controllers')
     ->expect('App\Http\Controllers')
     ->not->toBeUsed();
 
-arch('controllers expose only resource methods')
+arch('controllers are cruddy by design and expose only resource methods')
     ->expect('App\Http\Controllers')
     ->not->toHavePublicMethodsBesides([
         '__construct',
