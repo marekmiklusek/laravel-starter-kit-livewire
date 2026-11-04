@@ -4,4 +4,7 @@ declare(strict_types=1);
 
 namespace {{ namespace }};
 
-final readonly class {{ class }} {}
+final readonly class {{ class }}
+{
+    //
+}

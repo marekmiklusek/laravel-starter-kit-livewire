@@ -32,7 +32,10 @@ it('creates an action from the stub without the action suffix', function (): voi
 
         final readonly class CreateOrder
         {
-            public function execute(): void {}
+            public function execute(): void
+            {
+                //
+            }
         }
 
         PHP);
