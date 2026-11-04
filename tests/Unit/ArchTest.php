@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 arch()->preset()->php();
-arch()->preset()->strict();
-arch()->preset()->security();
 arch()->preset()->laravel();
+arch()->preset()->security();
+arch()->preset()->strict()->ignoring('App\Models');
 
 arch('controllers')
     ->expect('App\Http\Controllers')
@@ -18,6 +18,14 @@ arch('controllers')
 arch('commands')
     ->expect('App\Console\Commands')
     ->not->toBeUsed();
+
+arch('models follow the strict preset but may declare protected scopes')
+    ->expect('App\Models')
+    ->toUseStrictTypes()
+    ->toUseStrictEquality()
+    ->classes()
+    ->toBeFinal()
+    ->not->toBeAbstract();
 
 arch('controllers are cruddy by design and expose only resource methods')
     ->expect('App\Http\Controllers')

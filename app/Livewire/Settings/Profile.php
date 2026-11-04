@@ -31,13 +31,14 @@ final class Profile extends Component
         $user = Auth::user();
 
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'min:1', 'max:255'],
 
             'email' => [
                 'required',
                 'string',
                 'lowercase',
                 'email',
+                'min:1',
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id),
             ],
