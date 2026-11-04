@@ -15,6 +15,10 @@ arch('controllers')
     ->expect('App\Http\Controllers')
     ->not->toBeUsed();
 
+arch('commands')
+    ->expect('App\Console\Commands')
+    ->not->toBeUsed();
+
 arch('controllers are cruddy by design and expose only resource methods')
     ->expect('App\Http\Controllers')
     ->not->toHavePublicMethodsBesides([
@@ -89,7 +93,3 @@ arch('queries expose no other public method')
 arch('dtos are readonly')
     ->expect('App\Dtos')
     ->toBeReadonly();
-
-arch('commands')
-    ->expect('App\Console\Commands')
-    ->not->toBeUsed();
