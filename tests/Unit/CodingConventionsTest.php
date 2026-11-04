@@ -67,6 +67,33 @@ it('defines no default column values in migrations', function (): void {
     expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
 });
 
+it('defines no down method in migrations', function (): void {
+    $violations = [];
+
+    foreach (tokenizedPhpFiles('database/migrations') as $path => $tokens) {
+        foreach ($tokens as $index => $token) {
+            $isDownMethod = $token->is(T_FUNCTION)
+                && ($tokens[$index + 1] ?? null)?->is('down');
+
+            if ($isDownMethod) {
+                $violations[] = "{$path}:{$token->line}";
+            }
+        }
+    }
+
+    expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
+});
+
+it('names form requests after the controller method they serve', function (): void {
+    $violations = collect(File::allFiles(app_path('Http/Requests')))
+        ->reject(fn (SplFileInfo $file): bool => preg_match('/^(List|Show|Create|Update|Delete)[A-Z]\w*Request$/', $file->getFilenameWithoutExtension()) === 1)
+        ->map(fn (SplFileInfo $file): string => 'app/Http/Requests/'.str_replace('\\', '/', $file->getRelativePathname()))
+        ->values()
+        ->all();
+
+    expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
+});
+
 it('uses no mocks in tests', function (): void {
     $mockingMethods = [
         'mock',
