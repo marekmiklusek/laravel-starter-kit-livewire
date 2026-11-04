@@ -19,14 +19,6 @@ arch('commands')
     ->expect('App\Console\Commands')
     ->not->toBeUsed();
 
-arch('models follow the strict preset but may declare protected scopes')
-    ->expect('App\Models')
-    ->toUseStrictTypes()
-    ->toUseStrictEquality()
-    ->classes()
-    ->toBeFinal()
-    ->not->toBeAbstract();
-
 arch('controllers are cruddy by design and expose only resource methods')
     ->expect('App\Http\Controllers')
     ->not->toHavePublicMethodsBesides([
@@ -54,6 +46,14 @@ arch('controllers delegate validation and authorization to form requests')
         ValidationException::class,
         Gate::class,
     ]);
+
+arch('models follow the strict preset but may declare protected scopes')
+    ->expect('App\Models')
+    ->toUseStrictTypes()
+    ->toUseStrictEquality()
+    ->classes()
+    ->toBeFinal()
+    ->not->toBeAbstract();
 
 arch('actions delegate validation and authorization to form requests')
     ->expect('App\Actions')
