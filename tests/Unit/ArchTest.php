@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 arch()->preset()->php();
 arch()->preset()->laravel();
@@ -101,3 +102,9 @@ arch('queries expose no other public method')
 arch('dtos are readonly')
     ->expect('App\Dtos')
     ->toBeReadonly();
+
+arch('rules')
+    ->expect('App\Rules')
+    ->classes()
+    ->toHaveSuffix('Rule')
+    ->toImplement(ValidationRule::class);
