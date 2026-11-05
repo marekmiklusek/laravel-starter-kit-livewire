@@ -442,3 +442,22 @@ it('declares protected model methods only as scopes', function (): void {
 
     expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
 });
+
+it('names enum cases in title case', function (): void {
+    $violations = [];
+
+    foreach (appClassReflections() as $classReflection) {
+        foreach ($classReflection->getReflectionConstants() as $constantReflection) {
+            $caseName = $constantReflection->getName();
+
+            $isTitleCase = preg_match('/^[A-Z][a-zA-Z0-9]*$/', $caseName) === 1
+                && preg_match('/[A-Z]{2}/', $caseName) !== 1;
+
+            if ($constantReflection->isEnumCase() && ! $isTitleCase) {
+                $violations[] = "{$classReflection->getName()}::{$caseName}";
+            }
+        }
+    }
+
+    expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
+});

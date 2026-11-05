@@ -99,9 +99,10 @@ arch('queries expose no other public method')
     ->expect('App\Queries')
     ->not->toHavePublicMethodsBesides(['get', '__construct']);
 
-arch('dtos are readonly')
+arch('dtos')
     ->expect('App\Dtos')
-    ->toBeReadonly();
+    ->toBeReadonly()
+    ->toHaveSuffix('Dto');
 
 arch('rules')
     ->expect('App\Rules')
