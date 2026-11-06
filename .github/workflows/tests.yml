@@ -92,15 +92,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: tmp/rector
-          key: ${{ runner.os }}-rector-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-rector-
+          key: ${{ runner.os }}-rector-${{ hashFiles('rector.php') }}-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-rector-${{ hashFiles('rector.php') }}-
 
       - name: PHPStan Cache
         uses: actions/cache@v4
         with:
           path: tmp/phpstan
-          key: ${{ runner.os }}-phpstan-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-phpstan-
+          key: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon') }}-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-phpstan-${{ hashFiles('phpstan.neon') }}-
 
       - name: Tests
         run: composer test

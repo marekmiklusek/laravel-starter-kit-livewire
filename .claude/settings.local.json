@@ -5,5 +5,9 @@
       "Bash(grep -r \"$this->call\\\\|Manager\\\\|CSRF\\\\|Forgery\" \"c:\\\\Users\\\\marek\\\\Herd\\\\laravel-starter-kit-livewire/bootstrap\" --include=\"*.php\")",
       "Bash(composer update:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "laravel-boost"
+  ],
+  "enableAllProjectMcpServers": true
 }
