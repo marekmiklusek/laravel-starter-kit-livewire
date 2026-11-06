@@ -105,6 +105,7 @@ jobs:
         run: composer test
 
       - name: Store Artifacts
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: browser-screenshots
