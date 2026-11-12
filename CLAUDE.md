@@ -5,6 +5,8 @@
 
 Rules with an ID are enforced by PHPStan (`vendor/bin/phpstan`) or by the architecture tests in `tests/Unit`. The error message starts with the same ID.
 
+These rules override conflicting advice in skills (laravel-best-practices, testing-best-practices): no mocks in tests, no code comments, Carbon expressions for cache TTL, no `Action` suffix, no service classes for business logic.
+
 ## Layers
 
 - A1: Database writes only in actions (`app/Actions`). Controllers, Livewire components, commands, jobs and listeners call an action, never `save()`, `update()`, `create()`, `delete()` or `DB::transaction()` directly.
