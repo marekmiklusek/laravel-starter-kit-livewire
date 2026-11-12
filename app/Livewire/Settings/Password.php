@@ -6,6 +6,7 @@ namespace App\Livewire\Settings;
 
 use App\Models\User;
 use Livewire\Component;
+use App\Actions\UpdateUserPassword;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password as PasswordRule;
@@ -18,7 +19,7 @@ final class Password extends Component
 
     public string $password_confirmation = '';
 
-    public function updatePassword(): void
+    public function updatePassword(UpdateUserPassword $updateUserPassword): void
     {
         try {
             /** @var array<string, string> $validated */
@@ -35,9 +36,7 @@ final class Password extends Component
         /** @var User $user */
         $user = Auth::user();
 
-        $user->update([
-            'password' => $validated['password'],
-        ]);
+        $updateUserPassword->execute($user, $validated['password']);
 
         $this->reset('current_password', 'password', 'password_confirmation');
 

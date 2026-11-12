@@ -64,6 +64,19 @@ final readonly class SideEffectCallDetector
         DatabaseManager::class,
     ];
 
+    private const array CONNECTION_QUERY_METHODS = ['table', 'select', 'selectone', 'scalar', 'query', 'cursor'];
+
+    private const array MODEL_QUERY_METHODS = [
+        'fresh', 'refresh', 'load', 'loadmissing', 'loadmorph',
+        'loadcount', 'loadsum', 'loadavg', 'loadmax', 'loadmin', 'loadexists',
+    ];
+
+    private const array QUERY_BUILDER_TARGETS = [
+        EloquentBuilder::class,
+        QueryBuilder::class,
+        Relation::class,
+    ];
+
     private const array HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'head', 'send', 'pool'];
 
     private const array DISPATCH_FUNCTIONS = ['dispatch', 'dispatch_sync', 'event', 'broadcast'];
@@ -132,6 +145,42 @@ final readonly class SideEffectCallDetector
             && $this->isSubclassOf($className, Model::class);
 
         return $isConnectionWrite || $isModelWrite ? $this->shortClassName($className).'::'.$methodName.'()' : null;
+    }
+
+    public function describeDatabaseQuery(CallLike $call, Scope $scope): ?string
+    {
+        $methodName = $this->methodName($call);
+
+        if ($methodName === null || $this->describeDatabaseWrite($call, $scope) !== null) {
+            return null;
+        }
+
+        $normalizedMethodName = mb_strtolower($methodName);
+
+        if ($call instanceof StaticCall) {
+            $className = $this->staticClassName($call, $scope);
+
+            if ($className === null) {
+                return null;
+            }
+
+            $isConnectionQuery = $className === DB::class
+                && in_array($normalizedMethodName, self::CONNECTION_QUERY_METHODS, true);
+
+            return $isConnectionQuery || $this->isSubclassOf($className, Model::class) ? $this->shortClassName($className).'::'.$methodName.'()' : null;
+        }
+
+        if (! $call instanceof MethodCall && ! $call instanceof NullsafeMethodCall) {
+            return null;
+        }
+
+        $isModelQuery = $this->isCalledOnAnyOf($call, $scope, [Model::class])
+            && (in_array($normalizedMethodName, self::MODEL_QUERY_METHODS, true) || $this->returnsAnyOf($call, $scope, self::QUERY_BUILDER_TARGETS));
+
+        $isConnectionQuery = in_array($normalizedMethodName, self::CONNECTION_QUERY_METHODS, true)
+            && $this->isCalledOnAnyOf($call, $scope, self::CONNECTION_TARGETS);
+
+        return $isModelQuery || $isConnectionQuery ? $methodName.'()' : null;
     }
 
     public function describeExternalSideEffect(CallLike $call, Scope $scope): ?string
@@ -212,6 +261,22 @@ final readonly class SideEffectCallDetector
         $calledOnType = $scope->getType($methodCall->var);
 
         return array_any($classNames, fn (string $className): bool => new ObjectType($className)->isSuperTypeOf($calledOnType)->yes());
+    }
+
+    /**
+     * @param  list<string>  $classNames
+     */
+    private function returnsAnyOf(MethodCall|NullsafeMethodCall $methodCall, Scope $scope, array $classNames): bool
+    {
+        $returnType = $scope->getType($methodCall);
+
+        foreach ($classNames as $className) {
+            if (new ObjectType($className)->isSuperTypeOf($returnType)->yes()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isSubclassOf(string $className, string $parentClassName): bool

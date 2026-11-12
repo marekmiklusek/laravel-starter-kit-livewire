@@ -7,6 +7,7 @@ namespace App\Livewire\Settings;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Validation\Rule;
+use App\Actions\UpdateUserProfile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -25,11 +26,12 @@ final class Profile extends Component
         $this->email = $user->email;
     }
 
-    public function updateProfileInformation(): void
+    public function updateProfileInformation(UpdateUserProfile $updateUserProfile): void
     {
         /** @var User $user */
         $user = Auth::user();
 
+        /** @var array{name: string, email: string} $validated */
         $validated = $this->validate([
             'name' => ['required', 'string', 'min:1', 'max:255'],
 
@@ -44,16 +46,7 @@ final class Profile extends Component
             ],
         ]);
 
-        /** @var array<string, mixed> $validatedArray */
-        $validatedArray = $validated;
-
-        $user->fill($validatedArray);
-
-        if ($user->isDirty('email')) {
-            $user->forceFill(['email_verified_at' => null]);
-        }
-
-        $user->save();
+        $updateUserProfile->execute($user, $validated['name'], $validated['email']);
 
         $this->dispatch('profile-updated', name: $user->name);
     }

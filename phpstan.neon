@@ -10,6 +10,8 @@ services:
         arguments:
             sideEffectClasses: []
     -
+        class: Tests\PHPStan\Rules\DelegatingLayerMatcher
+    -
         class: Tests\PHPStan\Rules\ArrayInsteadOfDtoRule
         arguments:
             apiResponseNamespaces:
@@ -21,6 +23,8 @@ rules:
     - Tests\PHPStan\Rules\QueryMutationRule
     - Tests\PHPStan\Rules\SideEffectInTransactionRule
     - Tests\PHPStan\Rules\CacheTtlNotCarbonRule
+    - Tests\PHPStan\Rules\DatabaseWriteOutsideActionRule
+    - Tests\PHPStan\Rules\DatabaseQueryOutsideQueryRule
 
 parameters:
 
