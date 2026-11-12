@@ -51,9 +51,9 @@ function appClassReflections(): array
     return $classReflections;
 }
 
-function isValueParameterType(string $className): bool
+function isDateParameterType(string $className): bool
 {
-    return enum_exists($className) || is_a($className, DateTimeInterface::class, true);
+    return is_a($className, DateTimeInterface::class, true);
 }
 
 /**
@@ -303,7 +303,7 @@ it('names class typed parameters after their class', function (): void {
                         ? $parameterReflection->getType()->getName()
                         : null,
                 ])
-                ->filter(fn (?string $className): bool => $className !== null && ! in_array($className, [Closure::class, 'self', 'static', 'parent'], true) && ! isValueParameterType($className));
+                ->filter(fn (?string $className): bool => $className !== null && ! in_array($className, [Closure::class, 'self', 'static', 'parent'], true) && ! isDateParameterType($className));
 
             $sharedClassNames = $parameterClassNames->duplicates();
 
