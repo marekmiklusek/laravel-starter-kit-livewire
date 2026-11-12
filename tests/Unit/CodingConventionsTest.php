@@ -51,6 +51,27 @@ function appClassReflections(): array
     return $classReflections;
 }
 
+function isValueParameterType(string $className): bool
+{
+    return enum_exists($className) || is_a($className, DateTimeInterface::class, true);
+}
+
+/**
+ * @return list<string>
+ */
+function testFilePaths(): array
+{
+    $testFilePaths = [];
+
+    foreach (['Feature', 'Unit'] as $suite) {
+        foreach (File::allFiles(base_path("tests/{$suite}")) as $file) {
+            $testFilePaths[] = $suite.'/'.str_replace('\\', '/', $file->getRelativePathname());
+        }
+    }
+
+    return $testFilePaths;
+}
+
 /**
  * @param  list<PhpToken>  $tokens
  * @return list<list<PhpToken>>
@@ -282,7 +303,7 @@ it('names class typed parameters after their class', function (): void {
                         ? $parameterReflection->getType()->getName()
                         : null,
                 ])
-                ->filter(fn (?string $className): bool => $className !== null && ! in_array($className, [Closure::class, 'self', 'static', 'parent'], true));
+                ->filter(fn (?string $className): bool => $className !== null && ! in_array($className, [Closure::class, 'self', 'static', 'parent'], true) && ! isValueParameterType($className));
 
             $sharedClassNames = $parameterClassNames->duplicates();
 
@@ -458,6 +479,49 @@ it('names enum cases in title case', function (): void {
             }
         }
     }
+
+    expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
+});
+
+it('places class tests at the path mirroring app', function (): void {
+    $appClassPaths = collect(appClassReflections())
+        ->map(fn (ReflectionClass $classReflection): string => str_replace('\\', '/', Str::after($classReflection->getName(), 'App\\')))
+        ->groupBy(fn (string $classPath): string => class_basename($classPath));
+
+    $violations = [];
+
+    foreach (testFilePaths() as $testFilePath) {
+        if (! str_ends_with($testFilePath, 'Test.php')) {
+            continue;
+        }
+
+        $suite = Str::before($testFilePath, '/');
+        $testedClassPath = Str::beforeLast(Str::after($testFilePath, '/'), 'Test.php');
+
+        /** @var list<string> $matchingClassPaths */
+        $matchingClassPaths = $appClassPaths->get(class_basename($testedClassPath), collect())->all();
+
+        if ($matchingClassPaths !== [] && ! in_array($testedClassPath, $matchingClassPaths, true)) {
+            $violations[] = "tests/{$testFilePath} should be tests/{$suite}/{$matchingClassPaths[0]}Test.php";
+        }
+    }
+
+    expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
+});
+
+it('gives every class in tested directories a test at the mirrored path', function (): void {
+    $testedDirectories = ['Actions/', 'Queries/', 'Console/Commands/', 'Http/Controllers/', 'Http/Middleware/', 'Livewire/', 'Jobs/', 'Listeners/', 'Services/', 'Models/'];
+
+    $testFilePaths = testFilePaths();
+
+    $violations = collect(appClassReflections())
+        ->reject(fn (ReflectionClass $classReflection): bool => $classReflection->isTrait() || $classReflection->isInterface() || $classReflection->isEnum() || $classReflection->isAbstract())
+        ->map(fn (ReflectionClass $classReflection): string => str_replace('\\', '/', Str::after($classReflection->getName(), 'App\\')))
+        ->filter(fn (string $classPath): bool => Str::startsWith($classPath, $testedDirectories))
+        ->reject(fn (string $classPath): bool => array_intersect(["Feature/{$classPath}Test.php", "Unit/{$classPath}Test.php"], $testFilePaths) !== [])
+        ->map(fn (string $classPath): string => "app/{$classPath}.php has no tests/Feature/{$classPath}Test.php or tests/Unit/{$classPath}Test.php")
+        ->values()
+        ->all();
 
     expect($violations)->toBeEmpty(implode(PHP_EOL, $violations));
 });

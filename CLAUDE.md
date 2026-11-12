@@ -37,6 +37,10 @@ These rules override conflicting advice in skills (laravel-best-practices, testi
 - Variables use full words, never single letters or abbreviations.
 - A variable, parameter or injected dependency holding an object is named after its class in camelCase (`CreateUser $createUser`). Use role names only when one scope holds several objects of the same class (`User $sender, User $recipient`).
 
+## Tests
+
+- Tests mirror `app/`: the test for `app/Http/Controllers/Settings/ProfileController.php` is `tests/Feature/Http/Controllers/Settings/ProfileControllerTest.php` (or the same path under `tests/Unit`). Every action, query, command, controller, middleware, Livewire component, job, listener, service and model has its own test file there.
+
 ## Code style
 
 - C1: Cache, rate limiter and signed URL expirations are inline Carbon expressions (`now()->addMinutes(15)`), never an integer or a class constant.
