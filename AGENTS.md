@@ -45,6 +45,7 @@ These rules override conflicting advice in skills (laravel-best-practices, testi
 
 - C1: Cache, rate limiter and signed URL expirations are inline Carbon expressions (`now()->addMinutes(15)`), never an integer or a class constant.
 - Validation rules for strings, numbers, arrays and files always have both `min:` and `max:`.
+- Money is never a `float`. Store amounts as integers in the smallest unit (cents) in `int` properties and `unsignedBigInteger` or `bigInteger` columns. Convert decimal prices from external APIs (e.g. Shoptet `"123.40"`) to cents right in the API client and format them as decimals only for display.
 - Separate each logical step in a method with a blank line.
 - Non-sensitive settings live in `config/`, never in `.env`. `.env` holds secrets only.
 
