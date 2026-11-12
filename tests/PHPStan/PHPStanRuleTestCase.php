@@ -7,6 +7,7 @@ namespace Tests\PHPStan;
 use LogicException;
 use PhpParser\Node;
 use PHPStan\Rules\Rule;
+use PHPStan\Collectors\Collector;
 use PHPStan\Testing\RuleTestCase;
 
 /**
@@ -19,13 +20,18 @@ abstract class PHPStanRuleTestCase extends RuleTestCase
     /** @var TRule|null */
     private ?Rule $rule = null;
 
+    /** @var list<Collector<Node, mixed>> */
+    private array $collectors = [];
+
     /**
      * @param  TRule  $rule
      * @param  list<array{0: string, 1: int}>  $expectedErrors
+     * @param  list<Collector<Node, mixed>>  $collectors
      */
-    final public function assertRuleErrors(Rule $rule, string $code, array $expectedErrors): void
+    final public function assertRuleErrors(Rule $rule, string $code, array $expectedErrors, array $collectors = []): void
     {
         $this->rule = $rule;
+        $this->collectors = $collectors;
 
         $analysedFilePath = sys_get_temp_dir().DIRECTORY_SEPARATOR.'phpstan-rule-'.bin2hex(random_bytes(8)).'.php';
 
@@ -36,6 +42,14 @@ abstract class PHPStanRuleTestCase extends RuleTestCase
         } finally {
             unlink($analysedFilePath);
         }
+    }
+
+    /**
+     * @return list<Collector<Node, mixed>>
+     */
+    protected function getCollectors(): array
+    {
+        return $this->collectors;
     }
 
     /**

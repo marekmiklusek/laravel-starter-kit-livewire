@@ -19,12 +19,16 @@ services:
         tags:
             - phpstan.rules.rule
 
+collectors:
+    - Tests\PHPStan\Rules\ActionPrivateMethodCollector
+
 rules:
     - Tests\PHPStan\Rules\QueryMutationRule
     - Tests\PHPStan\Rules\SideEffectInTransactionRule
     - Tests\PHPStan\Rules\CacheTtlNotCarbonRule
     - Tests\PHPStan\Rules\DatabaseWriteOutsideActionRule
     - Tests\PHPStan\Rules\DatabaseQueryOutsideQueryRule
+    - Tests\PHPStan\Rules\DuplicatedActionPrivateMethodRule
 
 parameters:
 

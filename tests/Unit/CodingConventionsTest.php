@@ -416,7 +416,7 @@ it('limits sized validation rules with both min and max', function (): void {
 it('gives no class an ambiguous bare name', function (): void {
     $violations = collect(appClassReflections())
         ->map(fn (ReflectionClass $classReflection): string => $classReflection->getName())
-        ->filter(fn (string $className): bool => in_array(class_basename($className), ['Config', 'Item', 'Result', 'Rules', 'Data'], true))
+        ->filter(fn (string $className): bool => in_array(class_basename($className), ['Config', 'Item', 'Result', 'Rules', 'Data', 'Service', 'Manager', 'Helper', 'Handler', 'Settings', 'Options', 'Payload', 'Response', 'Status', 'Type'], true))
         ->values()
         ->all();
 
