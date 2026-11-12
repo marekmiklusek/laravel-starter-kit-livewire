@@ -7,7 +7,7 @@
 Beyond Laravel's default Livewire stack, this kit ships pre-configured with:
 
 - [marekmiklusek/database-backup](https://github.com/marekmiklusek/database-backup): automated MySQL backups to local storage or Google Drive ([setup](#-database-backups))
-- [marekmiklusek/telegram-logger](https://github.com/marekmiklusek/telegram-logger): real-time log and exception delivery to Telegram ([setup](#-telegram-error-logging))
+- [marekmiklusek/laravel-slack-errors](https://github.com/marekmiklusek/laravel-slack-errors): unhandled exception notifications to Slack ([setup](#-slack-error-notifications))
 
 ## 📋 Requirements
 
@@ -150,36 +150,32 @@ php artisan db-backup:cleanup  # delete backups older than the retention period
 
 Adjust the disk, directory, filename pattern, retention period, and mail notifications in `config/database-backup.php`. To back up to Google Drive instead of (or alongside) local storage, add a `google` disk to `config/filesystems.php` and set `storage.disk`. See the [package README](https://github.com/marekmiklusek/database-backup) for the full Google Drive setup guide.
 
-#### 📢 Telegram Error Logging
+#### 📢 Slack Error Notifications
 
-The starter kit ships with [marekmiklusek/telegram-logger](https://github.com/marekmiklusek/telegram-logger), which forwards Laravel log messages and exceptions to a Telegram chat in real time. The config is already published to `config/telegram-logger.php`.
+The starter kit ships with [marekmiklusek/laravel-slack-errors](https://github.com/marekmiklusek/laravel-slack-errors), which sends unhandled exceptions to a Slack channel through an incoming webhook. No changes to `bootstrap/app.php` or the exception handler are needed.
 
-Add your bot credentials to `.env` (the keys are already present in `.env.example`):
+Create an incoming webhook for your Slack app, choose the channel, and add the URL to `.env` (the keys are already present in `.env.example`):
 
 ```env
-TELEGRAM_LOGGER_ENABLED=true   # default, set to false to disable the logger entirely
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHAT_ID=your_chat_id
+SLACK_ERRORS_ENABLED=true             # default, set to false to disable notifications entirely
+SLACK_ERRORS_WEBHOOK_URL=your_webhook_url
+SLACK_ERRORS_ENVIRONMENTS=production  # comma-separated list, wildcards allowed
 ```
 
-No logging channel setup is required. The package hooks into Laravel's log events automatically, so ordinary `Log::error()` calls and unhandled exceptions are delivered:
+Send a test message to verify the webhook (it ignores the environment filter):
 
-```php
-use Illuminate\Support\Facades\Log;
-
-Log::error('User not found', ['user_id' => 42]);
+```bash
+php artisan slack-errors:test
 ```
 
-By default only `error` and above are sent. Change the threshold or enable silent notifications in `config/telegram-logger.php`:
+To change the mention, throttling, or ignored exceptions, publish the config to `config/slack-errors.php`:
 
-```php
-'level' => 'error',              // debug | info | warning | error | critical
-'silent_notification' => false,  // true = no sound/vibration
-'is_enabled' => env('TELEGRAM_LOGGER_ENABLED', true),
+```bash
+php artisan vendor:publish --tag=slack-errors-config
 ```
 
 > [!TIP]
-> The logger stays idle unless it is enabled **and** both credentials are set, so leaving `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` empty in local development sends nothing. Use `TELEGRAM_LOGGER_ENABLED=false` to switch it off per environment without clearing the credentials.
+> Nothing is sent while `SLACK_ERRORS_WEBHOOK_URL` is empty, and only the environments listed in `SLACK_ERRORS_ENVIRONMENTS` report, so local development stays quiet. Exceptions in your app's `dontReport` are never sent.
 
 #### 🚀 Production Environment
 
