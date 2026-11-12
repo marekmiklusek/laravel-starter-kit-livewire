@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
+use Tests\PHPStan\PHPStanRuleTestCase;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -24,3 +25,5 @@ pest()->extend(TestCase::class)
         Date::setTestNow(Date::now());
     })
     ->in('Browser', 'Feature', 'Unit');
+
+pest()->extend(PHPStanRuleTestCase::class)->in('PHPStan');

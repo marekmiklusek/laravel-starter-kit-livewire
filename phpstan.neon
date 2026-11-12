@@ -4,6 +4,24 @@ includes:
     - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/pestphp/pest-plugin-phpstan/extension.neon
 
+services:
+    -
+        class: Tests\PHPStan\Rules\SideEffectCallDetector
+        arguments:
+            sideEffectClasses: []
+    -
+        class: Tests\PHPStan\Rules\ArrayInsteadOfDtoRule
+        arguments:
+            apiResponseNamespaces:
+                - App\Services
+        tags:
+            - phpstan.rules.rule
+
+rules:
+    - Tests\PHPStan\Rules\QueryMutationRule
+    - Tests\PHPStan\Rules\SideEffectInTransactionRule
+    - Tests\PHPStan\Rules\CacheTtlNotCarbonRule
+
 parameters:
 
     paths:

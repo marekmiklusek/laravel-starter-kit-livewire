@@ -41,6 +41,7 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         MakeInheritedMethodVisibilitySameAsParentRector::class,
+        __DIR__.'/tests/PHPStan',
     ])
     ->withPreparedSets(
         deadCode: true,
