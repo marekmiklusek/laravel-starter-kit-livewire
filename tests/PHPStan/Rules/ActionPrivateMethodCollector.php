@@ -6,8 +6,8 @@ namespace Tests\PHPStan\Rules;
 
 use PhpParser\Node;
 use PHPStan\Analyser\Scope;
-use PHPStan\Collectors\Collector;
 use PhpParser\Node\Expr\Closure;
+use PHPStan\Collectors\Collector;
 use PHPStan\Node\InClassMethodNode;
 use PhpParser\PrettyPrinter\Standard;
 

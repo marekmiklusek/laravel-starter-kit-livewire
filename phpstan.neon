@@ -12,15 +12,16 @@ services:
     -
         class: Tests\PHPStan\Rules\DelegatingLayerMatcher
     -
+        class: Tests\PHPStan\Rules\ActionPrivateMethodCollector
+        tags:
+            - phpstan.collector
+    -
         class: Tests\PHPStan\Rules\ArrayInsteadOfDtoRule
         arguments:
             apiResponseNamespaces:
                 - App\Services
         tags:
             - phpstan.rules.rule
-
-collectors:
-    - Tests\PHPStan\Rules\ActionPrivateMethodCollector
 
 rules:
     - Tests\PHPStan\Rules\QueryMutationRule
