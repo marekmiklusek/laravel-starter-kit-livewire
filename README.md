@@ -1,6 +1,6 @@
 # 🚀 Laravel Livewire Starter Kit
 
-[Laravel's official Livewire starter kit](https://laravel.com/docs/12.x/starter-kits#livewire) enhanced with development workflow tools, code quality standards, and additional developer experience improvements.
+[Laravel's official Livewire starter kit](https://laravel.com/docs/13.x/starter-kits#livewire) enhanced with development workflow tools, code quality standards, and additional developer experience improvements.
 
 ## 📦 Bundled Packages
 
