@@ -211,6 +211,80 @@ This starts:
 
 Your Livewire application will be available at `http://localhost:8000` 🎉
 
+## 🏛️ Architecture
+
+The kit enforces a small set of architecture rules. They are written down for AI agents in `.ai/guidelines/architecture.md` and enforced by PHPStan and Pest, so a violation fails `composer test`.
+
+### 🧱 Layers
+
+| Layer | Location | Create with |
+|---|---|---|
+| Actions (writes and business logic) | `app/Actions` | `php artisan make:action "{Name}" --no-interaction` |
+| Queries (reads) | `app/Queries` | `php artisan make:query "{Name}" --no-interaction` |
+| DTOs (structured data between layers) | `app/Dtos` | `php artisan make:dto "{Name}" --no-interaction` |
+
+Livewire components, commands, jobs and listeners only validate input, call actions and queries, and return a response.
+
+### 🔎 PHPStan Rules
+
+Custom rules live in `tests/PHPStan/Rules` and run with `composer test:types`. Every error message starts with the rule ID and says how to fix it.
+
+| ID | Rule |
+|---|---|
+| Q1 | Query classes only read data |
+| T1 | No side effects (HTTP, API clients, jobs, events, mail, notifications) inside `DB::transaction()` |
+| D1 | Actions and queries never take or return associative arrays, API clients in `app/Services` never return them |
+| C1 | Cache, rate limiter and signed URL expirations are Carbon expressions (`now()->addMinutes(15)`) |
+| A1 | Database writes only in actions |
+| R1 | Database reads only in query classes |
+| P1 | A private method duplicated across actions is extracted into its own action |
+
+Two rules are configurable in `phpstan.neon`:
+
+```neon
+services:
+    -
+        class: Tests\PHPStan\Rules\SideEffectCallDetector
+        arguments:
+            sideEffectClasses:
+                - App\Services\ShoptetClient
+    -
+        class: Tests\PHPStan\Rules\ArrayInsteadOfDtoRule
+        arguments:
+            apiResponseNamespaces:
+                - App\Services
+```
+
+- `sideEffectClasses`: your API clients, so T1 also catches their calls inside a transaction
+- `apiResponseNamespaces`: where your API clients live, so D1 checks their return values
+
+### ✅ Conventions
+
+Checked by `tests/Unit/ArchTest.php` and `tests/Unit/CodingConventionsTest.php`:
+
+- Tests mirror `app/`: `app/Livewire/Settings/Profile.php` is tested in `tests/Feature/Livewire/Settings/ProfileTest.php`, and every action, query, command, controller, middleware, Livewire component, job, listener, service and model has its own test file
+- Objects are named after their class (`CreateUser $createUser`), dates by meaning (`CarbonInterface $orderedAt`)
+- `app/Actions`, `app/Dtos` and `app/Enums` are flat, ambiguous class names (`Config`, `Item`, `Service`, ...) are not allowed
+- Validation rules always have both `min:` and `max:`
+- No mocks in tests and no single-letter variables
+
+Money is never a `float`. Amounts are stored as integers in the smallest unit (cents) and formatted as decimals only for display.
+
+## 🤖 AI Guidelines
+
+The kit uses [Laravel Boost](https://github.com/laravel/boost) to generate `CLAUDE.md` (Claude Code) and `AGENTS.md` (Codex) from one source:
+
+- `.ai/guidelines/architecture.md`: the kit's architecture rules with the same IDs as the PHPStan errors
+- `.ai/guidelines/php/core.blade.php`: overrides Boost's PHP guideline (no descriptive comments, type-only PHPDoc)
+
+Kit rules take precedence over conflicting advice in Boost skills. Never edit `CLAUDE.md` or `AGENTS.md` directly. Change the guidelines and regenerate them:
+
+```bash
+php artisan boost:update
+```
+
+`boost:update` also runs automatically after `composer update`.
+
 ## 🔍 Code Quality
 
 ### 🧹 Linting & Formatting
@@ -243,7 +317,7 @@ This includes:
 
 ### 🌐 Browser Testing
 
-This starter kit includes Pest 4 with browser testing capabilities. Create browser tests in `tests/Browser/`:
+This starter kit includes Pest 5 with browser testing capabilities. Create browser tests in `tests/Browser/`:
 
 ```php
 it('displays the login page', function () {
