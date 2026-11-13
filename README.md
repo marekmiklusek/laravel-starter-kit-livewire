@@ -317,7 +317,7 @@ This includes:
 
 ### 🌐 Browser Testing
 
-This starter kit includes Pest 5 with browser testing capabilities. Create browser tests in `tests/Browser/`:
+This starter kit includes Pest with browser testing capabilities. Create browser tests in `tests/Browser/`:
 
 ```php
 it('displays the login page', function () {
