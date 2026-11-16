@@ -17,7 +17,7 @@
         "livewire/flux": "^2.21.0",
         "livewire/volt": "^1.11.2",
         "marekmiklusek/database-backup": "^2.0.3",
-        "marekmiklusek/laravel-slack-errors": "^1.0.1",
+        "marekmiklusek/laravel-slack-errors": "^2.0",
         "nunomaduro/essentials": "^1.2.0"
     },
     "require-dev": {
@@ -33,14 +33,14 @@
         "laravel/vet": "^0.2.1",
         "mockery/mockery": "^1.6.15",
         "nunomaduro/collision": "^8.9.6",
-        "pestphp/pest": "^5.3.5",
+        "pestphp/pest": "^5.3.6",
         "pestphp/pest-plugin-agent": "^5.0",
         "pestphp/pest-plugin-browser": "^5.2.0",
         "pestphp/pest-plugin-laravel": "^5.0.1",
         "pestphp/pest-plugin-phpstan": "^5.3.1",
         "pestphp/pest-plugin-rector": "^5.0.6",
         "pestphp/pest-plugin-type-coverage": "^5.1.0",
-        "rector/rector": "^2.8.4"
+        "rector/rector": "^2.8.5"
     },
     "autoload": {
         "psr-4": {
