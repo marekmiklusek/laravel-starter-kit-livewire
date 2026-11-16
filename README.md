@@ -108,7 +108,7 @@ Users are created from the CLI:
 php artisan user:create
 ```
 
-The command prompts for name, email and password (with confirmation). Created users have their email already verified.
+The command prompts for name and email, then generates a random password and prints it once. Created users have their email already verified.
 
 #### 🔑 Enable / Disable Two-Factor Authentication
 

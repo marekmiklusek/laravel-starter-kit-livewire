@@ -14,14 +14,6 @@ trait PasswordValidationRules
      */
     protected function passwordRules(): array
     {
-        return [...$this->passwordRulesWithoutConfirmation(), 'confirmed'];
-    }
-
-    /**
-     * @return array<int, Rule|array<mixed>|string>
-     */
-    protected function passwordRulesWithoutConfirmation(): array
-    {
-        return ['required', 'string', Password::default()];
+        return ['required', 'string', Password::default(), 'confirmed'];
     }
 }

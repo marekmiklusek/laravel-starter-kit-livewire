@@ -3,22 +3,29 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\PendingCommand;
 
-it('creates a user from the prompted details', function (): void {
+it('creates a verified user with a generated password and shows it', function (): void {
+    Str::createRandomStringsUsing(fn (): string => 'generated-password');
+
     /** @var PendingCommand $command */
     $command = $this->artisan('user:create');
 
     $command->expectsQuestion('Name', 'Test User')
         ->expectsQuestion('Email', 'test@example.com')
-        ->expectsQuestion('Password', 'Password123')
-        ->expectsQuestion('Confirm password', 'Password123')
         ->expectsOutputToContain('User [test@example.com] created successfully.')
+        ->expectsOutputToContain('generated-password')
         ->assertSuccessful();
 
     $command->run();
 
-    expect(User::query()->where('email', 'test@example.com')->exists())->toBeTrue();
+    $user = User::query()->sole();
+
+    expect($user->email)->toBe('test@example.com')
+        ->and($user->email_verified_at)->not->toBeNull()
+        ->and(Hash::check('generated-password', $user->password))->toBeTrue();
 });
 
 it('rejects a too long name right after it is entered', function (): void {
@@ -58,33 +65,4 @@ it('rejects a taken email right after it is entered', function (): void {
     $command->run();
 
     expect(User::query()->count())->toBe(1);
-});
-
-it('rejects a weak password right after it is entered', function (): void {
-    /** @var PendingCommand $command */
-    $command = $this->artisan('user:create');
-
-    $command->expectsQuestion('Name', 'Test User')
-        ->expectsQuestion('Email', 'test@example.com')
-        ->expectsQuestion('Password', 'short')
-        ->expectsOutputToContain('The password field must be at least 8 characters.')
-        ->assertFailed();
-
-    $command->run();
-});
-
-it('rejects a mismatched password confirmation', function (): void {
-    /** @var PendingCommand $command */
-    $command = $this->artisan('user:create');
-
-    $command->expectsQuestion('Name', 'Test User')
-        ->expectsQuestion('Email', 'test@example.com')
-        ->expectsQuestion('Password', 'Password123')
-        ->expectsQuestion('Confirm password', 'Mismatch123')
-        ->expectsOutputToContain('The password field confirmation does not match.')
-        ->assertFailed();
-
-    $command->run();
-
-    expect(User::query()->count())->toBe(0);
 });
