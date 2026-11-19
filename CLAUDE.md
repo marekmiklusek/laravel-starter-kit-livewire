@@ -47,7 +47,8 @@ These rules override conflicting advice in skills (laravel-best-practices, testi
 - Validation rules for strings, numbers, arrays and files always have both `min:` and `max:`.
 - Money is never a `float`. Store amounts as integers in the smallest unit (cents) in `int` properties and `unsignedBigInteger` or `bigInteger` columns. Convert decimal prices from external APIs (e.g. Shoptet `"123.40"`) to cents right in the API client and format them as decimals only for display.
 - Separate each logical step in a method with a blank line.
-- Non-sensitive settings live in `config/`, never in `.env`. `.env` holds secrets only.
+- New settings are fixed values in `config/`, without `env()`.
+- Add a key to `.env.example` only for a secret or a value that must differ between environments.
 
 ## Not in this repo
 
