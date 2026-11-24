@@ -647,8 +647,8 @@
             "hash": "tree-v2:185dcb944515b5af5eff4e1ecfda3e79cd9b5d44a83bb10ab31039acfc930c96"
         },
         "pestphp/pest-plugin-type-coverage": {
-            "version": "v5.1.0",
-            "hash": "tree-v2:4c88085a56d5511f415550fc59d23bb54486edb3f9d46a42c89d325fa0535262"
+            "version": "v5.1.1",
+            "hash": "tree-v2:302fa4895e2449aaae4e31e03a54db3302fb24d4c3bbf2c6119773e7e4286b63"
         },
         "phar-io/manifest": {
             "version": "2.0.4",
