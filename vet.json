@@ -49,16 +49,16 @@
             "hash": "tree-v2:19182f95f7c4750192e6cfe25b1f769686638fc59e5517710472b9f2b68315e7"
         },
         "guzzlehttp/guzzle": {
-            "version": "8.3.1",
-            "hash": "tree-v2:763707c9dabba9d088f1b48ede0b8c63a74a55e61f8fb0efd5191141b2c91b6c"
+            "version": "8.5.0",
+            "hash": "tree-v2:d831b1b9d2c933ad2bfa364f3302cb622236c120e15360e325087b2a0b8a4b42"
         },
         "guzzlehttp/promises": {
             "version": "3.1.0",
             "hash": "tree-v2:90beef2946a71a82b0c7762474c161fcfd223f726458547690a7b2de50399e0e"
         },
         "guzzlehttp/psr7": {
-            "version": "3.2.1",
-            "hash": "tree-v2:fd6f0182b7ba57c3164598f7e3da93cff2155e7ce137a7e28218a969b37a788e"
+            "version": "3.4.0",
+            "hash": "tree-v2:6ee8e6361458edf21cd482d053c59adfffb144b5075744add6f2e1cc30ec9f98"
         },
         "guzzlehttp/uri-template": {
             "version": "v2.0.1",
@@ -137,16 +137,16 @@
             "hash": "tree-v2:51c6cf859da80ddb3f1bf423ed083591969ca47dac43ad3cd9709aadb386e045"
         },
         "marekmiklusek/laravel-slack-errors": {
-            "version": "v1.0.1",
-            "hash": "tree-v2:dcbbd32f4eefd57f76e0475dd9d4be775ded9ebd0751df9bd55520d3e9ca3166"
+            "version": "v2.0.0",
+            "hash": "tree-v2:e484710051cf5199267b5174a5e72d6db06da0159fbda677929ba45bba1e611e"
         },
         "marekmiklusek/telegram-logger": {
             "version": "v2.0.4",
             "hash": "tree-v2:669dfae37207dd30910ff123159f100786a66ff5cba5f87d8a6eda8a390a2926"
         },
         "monolog/monolog": {
-            "version": "3.12.1",
-            "hash": "tree-v2:bb7a293a3ba00d6ca00220a74a07a194fa22bdde721ae8533e8773c7c3589cc4"
+            "version": "3.13.0",
+            "hash": "tree-v2:98ed3c403ea7e6dd3ce2d2c77042f149aa177fbb2978e56af953738d7eaad35f"
         },
         "nesbot/carbon": {
             "version": "3.15.1",
@@ -241,8 +241,8 @@
             "hash": "tree-v2:ad16df2a5b3611348dc88ba0a921d27b7e074406ff667ca547c6a3579734972c"
         },
         "ramsey/uuid": {
-            "version": "4.9.4",
-            "hash": "tree-v2:68d8f0c8847e8275812a7af6335ada47d71f8534bb96c5b54ea18141e4739d77"
+            "version": "4.10.0",
+            "hash": "tree-v2:8e64d53bde7be969dfd44eb3a2b6c79c541fd41efbd7be5f76a36a715c12c557"
         },
         "spomky-labs/cbor-php": {
             "version": "3.4.2",
@@ -337,8 +337,8 @@
             "hash": "tree-v2:0e8b2fc36bad3b28730f58da447ce185e1bc0b65e905d8a08f409b8444f853d4"
         },
         "symfony/polyfill-php85": {
-            "version": "v1.43.0",
-            "hash": "tree-v2:7399609adce52ef72aab96a3db35805814b486e6a46d30b2ed8e69f587eb3c8f"
+            "version": "v1.44.0",
+            "hash": "tree-v2:54c4974f69d3efad88ddb2980e1ebec8fd7269bda995e963089fd1777a56357b"
         },
         "symfony/polyfill-php86": {
             "version": "v1.43.0",
@@ -425,8 +425,8 @@
             "hash": "tree-v2:13d1fbc9a6c6864761fe485f8eb6f3d827c328148758ea0cce07f6fb21fbebe0"
         },
         "webmozart/assert": {
-            "version": "2.5.0",
-            "hash": "tree-v2:6a5e17ae786f8be693f150a8b7483a3a7ee71b88716a90fe2d5ac9fbd4876588"
+            "version": "2.5.1",
+            "hash": "tree-v2:5df3c64452131a1cd2481c80ebdc5e81bbc9659351057767f890ba2a5ef174c6"
         }
     },
     "require-dev": {
@@ -495,8 +495,8 @@
             "hash": "tree-v2:8ec4699d0c0c88cb401db507d2bc24438050f961bb7efceea2cae31b36c53483"
         },
         "brianium/paratest": {
-            "version": "v7.27.5",
-            "hash": "tree-v2:d82343684b4658d12db00f856c6b973063382f98f7f1ee231d53247fa0bcd0a3"
+            "version": "v7.29.0",
+            "hash": "tree-v2:02c57c9bc458924455e7ff0164cba974a9c830fa14ad12a95fcbcb02e9e2e297"
         },
         "composer/semver": {
             "version": "3.6.0",
@@ -511,8 +511,8 @@
             "hash": "tree-v2:dd3b9b1fec1ced5b861dc86bd48ca6ef0339c0c74ba89f817b16beab505879fd"
         },
         "entropy/entropy": {
-            "version": "0.4.36",
-            "hash": "tree-v2:a73c81e542f4f15cf49158ad80dc2112a42de1b077c47222063c75c5567ac734"
+            "version": "0.4.37",
+            "hash": "tree-v2:03efdb948ddd0319551556e86b0e08361ef871c3074c97c59748c5e35c00db69"
         },
         "fakerphp/faker": {
             "version": "v1.24.1",
@@ -607,8 +607,8 @@
             "hash": "tree-v2:84769b07bae8f30c5399dee2f653eee5047d28b861fc12caee9e423ec782a955"
         },
         "pestphp/pest": {
-            "version": "v5.3.5",
-            "hash": "tree-v2:f8146d4c5f92cd446c5e6a28a3cc0771ba1a3b9758b0fa3d191ce298f1ffb862"
+            "version": "v5.3.6",
+            "hash": "tree-v2:f52691faff7362c31f2fa9d2a030869d33bff3daa22b4dee8aaf780016ab51e7"
         },
         "pestphp/pest-plugin": {
             "version": "v5.0.0",
@@ -659,8 +659,8 @@
             "hash": "tree-v2:0409e2019377650177c2b10da803617abc85e49d5b02b8697d450c007eab42b4"
         },
         "phpstan/phpstan": {
-            "version": "2.3.5",
-            "hash": "tree-v2:a3fc88fb621bbabe8fa325c37648cc14a71490749b7c002f26ebdaa5ea7e6bad"
+            "version": "2.3.6",
+            "hash": "tree-v2:24d9299ad968a955644f90a2734dcaff0f7e70586ab413cc71ef792b76743019"
         },
         "phpunit/php-code-coverage": {
             "version": "14.5.2",
@@ -683,12 +683,12 @@
             "hash": "tree-v2:8eefb702abb01e63c627bc14e0d4c0c8d111f701c45d2dba2790ab3fcee24774"
         },
         "phpunit/phpunit": {
-            "version": "13.4.5",
-            "hash": "tree-v2:33e66ef6d97bbc736beec4e19c5a4d29e10a9bef6fd3a7856871012428be125d"
+            "version": "13.4.7",
+            "hash": "tree-v2:e3b5d49ef51197c66262b210418d90199640b4bb965deeea88942ab320fb8e71"
         },
         "rector/rector": {
-            "version": "2.8.4",
-            "hash": "tree-v2:b8b769bf67a111f12fd22002b98502e81edc7b479191477fb030727f0a357296"
+            "version": "2.8.5",
+            "hash": "tree-v2:18c4abf128cd5674d215ae75d6f7633599e94d54e3e78b8a123c638764a55b45"
         },
         "revolt/event-loop": {
             "version": "v1.0.9",
