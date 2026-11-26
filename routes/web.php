@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Laravel\Fortify\Features;
 use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\Passkeys;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\TwoFactor;
 use App\Livewire\Settings\Appearance;
@@ -29,5 +30,14 @@ Route::middleware(['auth'])->group(function (): void {
                 fn ($route) => $route->middleware(['password.confirm']),
             )
             ->name('two-factor.show');
+    }
+
+    if (Features::canManagePasskeys()) {
+        Route::get('settings/passkeys', Passkeys::class)
+            ->when(
+                Features::optionEnabled(Features::passkeys(), 'confirmPassword'),
+                fn ($route) => $route->middleware(['password.confirm']),
+            )
+            ->name('passkeys.show');
     }
 });

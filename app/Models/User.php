@@ -8,6 +8,8 @@ use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 use Database\Factories\UserFactory;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Fortify\Contracts\PasskeyUser;
+use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -24,6 +26,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read string|null $two_factor_secret
  * @property-read string|null $two_factor_recovery_codes
  * @property-read CarbonInterface|null $two_factor_confirmed_at
+ * @property-read CarbonInterface|null $second_factor_enrolled_at
  * @property-read string|null $remember_token
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
@@ -34,13 +37,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
     'two_factor_recovery_codes',
     'remember_token',
 ])]
-final class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
 
     use HasUuids;
     use Notifiable;
+    use PasskeyAuthenticatable;
     use TwoFactorAuthenticatable;
 
     public function initials(): string
@@ -65,6 +69,7 @@ final class User extends Authenticatable implements MustVerifyEmail
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted',
             'two_factor_confirmed_at' => 'datetime',
+            'second_factor_enrolled_at' => 'datetime',
             'remember_token' => 'string',
             'email_verified_at' => 'datetime',
             'created_at' => 'datetime',

@@ -121,6 +121,7 @@ return [
     'limiters' => [
         'login' => 'login',
         'two-factor' => 'two-factor',
+        'passkeys' => 'passkeys',
     ],
 
     /*
@@ -161,6 +162,11 @@ return [
             'confirmPassword' => true,
             // 'window' => 0,
         ]) : null,
+        Features::passkeys([
+            'confirmPassword' => true,
+        ]),
     ]),
+
+    'second_factor_required' => true,
 
 ];

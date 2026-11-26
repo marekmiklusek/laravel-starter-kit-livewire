@@ -8,6 +8,9 @@
                 <flux:navlist.item :href="route('two-factor.show')" wire:navigate>
                     {{ __('Two-Factor Auth') }}</flux:navlist.item>
             @endif
+            @if (Laravel\Fortify\Features::canManagePasskeys())
+                <flux:navlist.item :href="route('passkeys.show')" wire:navigate>{{ __('Passkeys') }}</flux:navlist.item>
+            @endif
             <flux:navlist.item :href="route('appearance.edit')" wire:navigate>{{ __('Appearance') }}</flux:navlist.item>
         </flux:navlist>
     </div>
@@ -15,6 +18,20 @@
     <flux:separator class="md:hidden" />
 
     <div class="flex-1 self-stretch max-md:pt-6">
+        @if (config()->boolean('fortify.second_factor_required') && auth()->user()?->second_factor_enrolled_at === null)
+            <flux:callout
+                variant="warning"
+                icon="shield-exclamation"
+                class="mb-6"
+                data-test="second-factor-enrollment-notice"
+            >
+                <flux:callout.heading>{{ __('Secure your account') }}</flux:callout.heading>
+                <flux:callout.text>
+                    {{ __('Set up two-factor authentication or add a passkey before you continue.') }}
+                </flux:callout.text>
+            </flux:callout>
+        @endif
+
         <flux:heading>{{ $heading ?? '' }}</flux:heading>
         <flux:subheading>{{ $subheading ?? '' }}</flux:subheading>
 

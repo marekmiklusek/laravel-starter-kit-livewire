@@ -11,7 +11,7 @@ final class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->create([
+        User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'password' => 'password',
