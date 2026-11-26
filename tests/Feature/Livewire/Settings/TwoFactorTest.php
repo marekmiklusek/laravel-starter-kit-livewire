@@ -39,7 +39,7 @@ it('resets pending two factor on mount when unconfirmed', function (): void {
 it('enables two factor and loads setup data', function (): void {
     $component = Livewire::test(TwoFactor::class)
         ->call('enable')
-        ->assertSet('showModal', true);
+        ->assertSet('showSetup', true);
 
     expect($component->get('qrCodeSvg'))->toBeString()->not->toBe('')
         ->and($component->get('manualSetupKey'))->toBeString()->not->toBe('');
@@ -73,7 +73,7 @@ it('confirms two factor with valid code', function (): void {
         ->set('code', $code)
         ->call('confirmTwoFactor')
         ->assertSet('twoFactorEnabled', true)
-        ->assertSet('showModal', false);
+        ->assertSet('showSetup', false);
 });
 
 it('resets verification state', function (): void {
@@ -103,7 +103,7 @@ it('disables two factor', function (): void {
     expect($user->refresh()->two_factor_secret)->toBeNull();
 });
 
-it('renders the enabled modal config', function (): void {
+it('renders the enabled setup config', function (): void {
     /** @var User $user */
     $user = $this->user;
 
@@ -119,7 +119,7 @@ it('renders the enabled modal config', function (): void {
         ->assertSee(__('Close'));
 });
 
-it('renders the verification modal config', function (): void {
+it('renders the verification setup config', function (): void {
     Livewire::test(TwoFactor::class)
         ->call('enable')
         ->call('showVerificationIfNecessary')
@@ -127,7 +127,7 @@ it('renders the verification modal config', function (): void {
         ->assertSee(__('Enter the 6-digit code from your authenticator app.'));
 });
 
-it('renders the default modal config', function (): void {
+it('renders the default setup config', function (): void {
     Livewire::test(TwoFactor::class)
         ->call('enable')
         ->assertSee(__('Enable Two-Factor Authentication'));
@@ -144,7 +144,7 @@ it('enables two factor directly when confirmation is disabled', function (): voi
         ->assertSet('twoFactorEnabled', true);
 });
 
-it('closes modal from showVerificationIfNecessary when confirmation is disabled', function (): void {
+it('closes the setup from showVerificationIfNecessary when confirmation is disabled', function (): void {
     config()->set('fortify.features', [
         Features::twoFactorAuthentication(['confirm' => false]),
     ]);
@@ -152,7 +152,7 @@ it('closes modal from showVerificationIfNecessary when confirmation is disabled'
     Livewire::test(TwoFactor::class)
         ->call('enable')
         ->call('showVerificationIfNecessary')
-        ->assertSet('showModal', false);
+        ->assertSet('showSetup', false);
 });
 
 it('surfaces setup data error when qr fails', function (): void {
@@ -171,4 +171,15 @@ it('surfaces setup data error when qr fails', function (): void {
         ->assertSet('manualSetupKey', '');
 
     $component->assertHasErrors('setupData');
+});
+
+it('shows the setup on the page and cancels it', function (): void {
+    Livewire::test(TwoFactor::class)
+        ->call('enable')
+        ->assertSeeHtml('data-test="two-factor-setup"')
+        ->assertDontSeeHtml('<dialog')
+        ->call('closeSetup')
+        ->assertSet('showSetup', false)
+        ->assertDontSeeHtml('data-test="two-factor-setup"')
+        ->assertSee(__('Enable 2FA'));
 });

@@ -32,7 +32,7 @@ final class TwoFactor extends Component
     #[Locked]
     public string $manualSetupKey = '';
 
-    public bool $showModal = false;
+    public bool $showSetup = false;
 
     public bool $showVerificationStep = false;
 
@@ -73,7 +73,7 @@ final class TwoFactor extends Component
 
         $this->loadSetupData();
 
-        $this->showModal = true;
+        $this->showSetup = true;
     }
 
     public function showVerificationIfNecessary(): void
@@ -86,7 +86,7 @@ final class TwoFactor extends Component
             return;
         }
 
-        $this->closeModal();
+        $this->closeSetup();
     }
 
     public function confirmTwoFactor(ConfirmTwoFactorAuthentication $confirmTwoFactorAuthentication): void
@@ -98,7 +98,7 @@ final class TwoFactor extends Component
 
         $confirmTwoFactorAuthentication($auth->user(), $this->code);
 
-        $this->closeModal();
+        $this->closeSetup();
 
         $this->twoFactorEnabled = true;
     }
@@ -120,13 +120,13 @@ final class TwoFactor extends Component
         $this->twoFactorEnabled = false;
     }
 
-    public function closeModal(): void
+    public function closeSetup(): void
     {
         $this->reset(
             'code',
             'manualSetupKey',
             'qrCodeSvg',
-            'showModal',
+            'showSetup',
             'showVerificationStep',
         );
 
@@ -147,7 +147,7 @@ final class TwoFactor extends Component
      * @return array<string, string>
      */
     #[Computed]
-    public function modalConfig(): array
+    public function setupConfig(): array
     {
         if ($this->twoFactorEnabled) {
             return [
