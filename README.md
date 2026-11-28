@@ -126,6 +126,41 @@ When set to `false`:
 
 The `TwoFactorAuthenticatable` trait stays on the `User` model. It is inert without the feature registered, and removing it would break factories that fill 2FA columns. Tests always run with 2FA enabled regardless of `.env` (forced via `phpunit.xml`), so the 100% coverage gate is not affected by toggling this flag locally.
 
+The 2FA setup (QR code, setup key, verification code) is rendered inline on the settings page, not in a modal, so browser authenticator extensions can scan the QR code.
+
+#### 🗝️ Passkeys
+
+Users can register passkeys (Windows Hello, Touch ID, a phone or a security key) under **Settings → Passkeys**, sign in with them on the login page and use them to confirm their password. Passkeys are provided by Fortify (`Features::passkeys()` in `config/fortify.php`) and stored in the `passkeys` table.
+
+WebAuthn only works in a secure context, so serve the site over HTTPS and point `APP_URL` at it:
+
+```bash
+herd secure your-app
+```
+
+```env
+APP_URL=https://your-app.test
+```
+
+Over plain HTTP the passkey buttons stay hidden and the settings page shows "Passkeys are not supported in this browser."
+
+> [!TIP]
+> On Windows, if the browser offers only 1Password, a phone or a security key, enable **Settings → Accounts → Passkeys → Advanced options → Save passkeys to this Windows device** to get Windows Hello (fingerprint, face, PIN).
+
+#### 🛡️ Required Second Factor
+
+Every user must set up two-factor authentication or a passkey before using the app. The `EnsureSecondFactorIsEnrolled` middleware (appended to the `web` group and registered as Livewire persistent middleware) redirects users without `second_factor_enrolled_at` to the 2FA settings page, or to the passkeys page when 2FA is disabled. Logout, password confirmation, email verification and the 2FA and passkey routes stay reachable.
+
+`second_factor_enrolled_at` is set once, when the user confirms 2FA or registers their first passkey. Users can disable 2FA or remove passkeys later without being redirected again.
+
+Turn the requirement off in `config/fortify.php`:
+
+```php
+'second_factor_required' => false,
+```
+
+Logging in with a password also confirms the password for the session, so the 2FA settings page does not ask for it again right after login.
+
 #### 💾 Database Backups
 
 The starter kit ships with [marekmiklusek/database-backup](https://github.com/marekmiklusek/database-backup) for automated MySQL backups. The config is already published to `config/database-backup.php`, so no `vendor:publish` is needed.
