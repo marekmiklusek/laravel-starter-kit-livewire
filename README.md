@@ -110,21 +110,15 @@ php artisan user:create
 
 The command prompts for name and email, then generates a random password and prints it once. Created users have their email already verified.
 
-#### 🔑 Enable / Disable Two-Factor Authentication
+#### 🔑 Two-Factor Authentication
 
-Two-factor authentication is controlled by a single switch via the `FORTIFY_2FA_ENABLED` env variable:
-
-```env
-FORTIFY_2FA_ENABLED=true   # default, 2FA is available
-FORTIFY_2FA_ENABLED=false  # disable 2FA
-```
-
-When set to `false`:
+Two-factor authentication (TOTP) is enabled in `config/fortify.php`. To disable it, remove `Features::twoFactorAuthentication()` from the `features` array:
 - The `/settings/two-factor` route is not registered and returns **404**
 - The "Two-Factor Auth" link in the settings sidebar is hidden automatically
 - Fortify's `/two-factor-*` endpoints (challenge, enable, confirm, recovery codes) are not registered
+- With the required second factor, users have to add a passkey instead
 
-The `TwoFactorAuthenticatable` trait stays on the `User` model. It is inert without the feature registered, and removing it would break factories that fill 2FA columns. Tests always run with 2FA enabled regardless of `.env` (forced via `phpunit.xml`), so the 100% coverage gate is not affected by toggling this flag locally.
+The `TwoFactorAuthenticatable` trait stays on the `User` model. It is inert without the feature registered, and removing it would break factories that fill 2FA columns.
 
 The 2FA setup (QR code, setup key, verification code) is rendered inline on the settings page, not in a modal, so browser authenticator extensions can scan the QR code.
 
