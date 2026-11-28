@@ -25,7 +25,7 @@ it('renders the empty state', function (): void {
 });
 
 it('shows the enrollment notice to unenrolled users', function (): void {
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])

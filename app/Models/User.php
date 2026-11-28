@@ -26,7 +26,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property-read string|null $two_factor_secret
  * @property-read string|null $two_factor_recovery_codes
  * @property-read CarbonInterface|null $two_factor_confirmed_at
- * @property-read CarbonInterface|null $second_factor_enrolled_at
  * @property-read string|null $remember_token
  * @property-read CarbonInterface $created_at
  * @property-read CarbonInterface $updated_at
@@ -69,7 +68,6 @@ final class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'two_factor_secret' => 'encrypted',
             'two_factor_recovery_codes' => 'encrypted',
             'two_factor_confirmed_at' => 'datetime',
-            'second_factor_enrolled_at' => 'datetime',
             'remember_token' => 'string',
             'email_verified_at' => 'datetime',
             'created_at' => 'datetime',

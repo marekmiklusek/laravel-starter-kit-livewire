@@ -149,9 +149,9 @@ Over plain HTTP the passkey buttons stay hidden and the settings page shows "Pas
 
 #### 🛡️ Required Second Factor
 
-Every user must set up two-factor authentication or a passkey before using the app. The `EnsureSecondFactorIsEnrolled` middleware (appended to the `web` group and registered as Livewire persistent middleware) redirects users without `second_factor_enrolled_at` to the 2FA settings page, or to the passkeys page when 2FA is disabled. Logout, password confirmation, email verification and the 2FA and passkey routes stay reachable.
+Every user must set up two-factor authentication or a passkey before using the app. The `EnsureSecondFactorIsEnrolled` middleware (appended to the `web` group and registered as Livewire persistent middleware) redirects users who have neither confirmed 2FA nor a passkey to the 2FA settings page, or to the passkeys page when 2FA is disabled. Logout, password confirmation, email verification and the 2FA and passkey routes stay reachable.
 
-`second_factor_enrolled_at` is set once, when the user confirms 2FA or registers their first passkey. Users can disable 2FA or remove passkeys later without being redirected again.
+At least one factor must stay active. Users can switch between 2FA and passkeys, but disabling 2FA without a passkey or removing the last passkey without 2FA sends them back to the setup. The check lives in `RequiresSecondFactorEnrollmentQuery`.
 
 Turn the requirement off in `config/fortify.php`:
 

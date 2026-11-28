@@ -14,7 +14,6 @@ test('to array', function (): void {
             'email',
             'email_verified_at',
             'two_factor_confirmed_at',
-            'second_factor_enrolled_at',
             'created_at',
             'updated_at',
         ]);
@@ -37,7 +36,6 @@ test('casts', function (): void {
         'two_factor_secret' => 'encrypted',
         'two_factor_recovery_codes' => 'encrypted',
         'two_factor_confirmed_at' => 'datetime',
-        'second_factor_enrolled_at' => 'datetime',
         'remember_token' => 'string',
         'email_verified_at' => 'datetime',
         'created_at' => 'datetime',

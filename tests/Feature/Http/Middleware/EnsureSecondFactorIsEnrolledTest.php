@@ -18,7 +18,7 @@ it('lets enrolled users through', function (): void {
 });
 
 it('redirects unenrolled users to two factor setup', function (): void {
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->get(route('dashboard'))
@@ -30,7 +30,7 @@ it('redirects unenrolled users to passkeys when two factor is disabled', functio
         Features::passkeys(['confirmPassword' => true]),
     ]);
 
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->get(route('dashboard'))
@@ -40,7 +40,7 @@ it('redirects unenrolled users to passkeys when two factor is disabled', functio
 it('lets unenrolled users through when no second factor feature is enabled', function (): void {
     config()->set('fortify.features', []);
 
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->get(route('dashboard'))
@@ -50,7 +50,7 @@ it('lets unenrolled users through when no second factor feature is enabled', fun
 it('lets unenrolled users through when enrollment is not required', function (): void {
     config()->set('fortify.second_factor_required', false);
 
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->get(route('dashboard'))
@@ -58,7 +58,7 @@ it('lets unenrolled users through when enrollment is not required', function ():
 });
 
 it('lets unenrolled users reach the enrollment routes', function (string $routeName): void {
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
@@ -71,11 +71,25 @@ it('lets unenrolled users reach the enrollment routes', function (string $routeN
 ]);
 
 it('lets unenrolled users log out', function (): void {
-    $user = User::factory()->withoutTwoFactor()->withoutSecondFactorEnrollment()->create();
+    $user = User::factory()->withoutTwoFactor()->create();
 
     $this->actingAs($user)
         ->post(route('logout'))
         ->assertRedirect('/');
 
     $this->assertGuest();
+});
+
+it('lets users with only a passkey through', function (): void {
+    $user = User::factory()->withoutTwoFactor()->create();
+
+    $user->passkeys()->create([
+        'name' => 'MacBook',
+        'credential_id' => 'credential-id',
+        'credential' => [],
+    ]);
+
+    $this->actingAs($user)
+        ->get(route('dashboard'))
+        ->assertOk();
 });

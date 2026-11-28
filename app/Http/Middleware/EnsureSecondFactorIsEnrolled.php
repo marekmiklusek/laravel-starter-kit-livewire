@@ -9,9 +9,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Features;
 use Symfony\Component\HttpFoundation\Response;
+use App\Queries\RequiresSecondFactorEnrollmentQuery;
 
-final class EnsureSecondFactorIsEnrolled
+final readonly class EnsureSecondFactorIsEnrolled
 {
+    public function __construct(private RequiresSecondFactorEnrollmentQuery $requiresSecondFactorEnrollmentQuery) {}
+
     /**
      * @param  Closure(Request): Response  $next
      */
@@ -19,33 +22,14 @@ final class EnsureSecondFactorIsEnrolled
     {
         $user = $request->user();
 
-        if (! $user instanceof User || $user->second_factor_enrolled_at !== null) {
+        if (! $user instanceof User || $request->routeIs('two-factor.*', 'passkey.*', 'passkeys.show', 'password.confirm*', 'verification.*', 'logout', '*livewire.*')) {
             return $next($request);
         }
 
-        $enrollmentRoute = $this->enrollmentRoute();
-
-        if ($enrollmentRoute === null || ! config()->boolean('fortify.second_factor_required')) {
+        if (! $this->requiresSecondFactorEnrollmentQuery->get($user)) {
             return $next($request);
         }
 
-        if ($request->routeIs('two-factor.*', 'passkey.*', 'passkeys.show', 'password.confirm*', 'verification.*', 'logout', '*livewire.*')) {
-            return $next($request);
-        }
-
-        return to_route($enrollmentRoute);
-    }
-
-    private function enrollmentRoute(): ?string
-    {
-        if (Features::canManageTwoFactorAuthentication()) {
-            return 'two-factor.show';
-        }
-
-        if (Features::canManagePasskeys()) {
-            return 'passkeys.show';
-        }
-
-        return null;
+        return to_route(Features::canManageTwoFactorAuthentication() ? 'two-factor.show' : 'passkeys.show');
     }
 }

@@ -18,7 +18,7 @@
     <flux:separator class="md:hidden" />
 
     <div class="flex-1 self-stretch max-md:pt-6">
-        @if (config()->boolean('fortify.second_factor_required') && auth()->user()?->second_factor_enrolled_at === null)
+        @if (auth()->user() instanceof App\Models\User && resolve(App\Queries\RequiresSecondFactorEnrollmentQuery::class)->get(auth()->user()))
             <flux:callout
                 variant="warning"
                 icon="shield-exclamation"
