@@ -110,5 +110,5 @@
     "Confirming...": "Potvrzuji...",
     "Or confirm with password": "Nebo potvrďte heslem",
     "Secure your account": "Zabezpečte svůj účet",
-    "Set up two-factor authentication or add a passkey before you continue.": "Než budete pokračovat, nastavte dvoufaktorové ověření nebo přidejte přístupový klíč."
+    "Set up two-factor authentication or add a passkey to continue.": "Pro pokračování nastavte dvoufaktorové ověření nebo přidejte přístupový klíč."
 }

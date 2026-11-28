@@ -22,12 +22,12 @@
             <flux:callout
                 variant="warning"
                 icon="shield-exclamation"
-                class="mb-6"
+                class="mb-6 max-w-lg"
                 data-test="second-factor-enrollment-notice"
             >
                 <flux:callout.heading>{{ __('Secure your account') }}</flux:callout.heading>
                 <flux:callout.text>
-                    {{ __('Set up two-factor authentication or add a passkey before you continue.') }}
+                    {{ __('Set up two-factor authentication or add a passkey to continue.') }}
                 </flux:callout.text>
             </flux:callout>
         @endif
